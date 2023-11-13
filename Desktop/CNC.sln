@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCDriver", "CNCDriver\CNCDriver.csproj", "{AF2D0F22-D987-4EA1-85FA-CD20BC1A4AFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SVG", "SVG\SVG.csproj", "{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCPlotter", "CNCPlotter\CNCPlotter.csproj", "{43349C98-66CB-4B56-AB0E-0060861CE5A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioSynthesis", "AudioSynthesis\AudioSynthesis.csproj", "{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphics", "Graphics\Graphics.csproj", "{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCScript", "CNCScript\CNCScript.csproj", "{91B802CB-CA61-485C-9415-29EA230C2A1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF2D0F22-D987-4EA1-85FA-CD20BC1A4AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF2D0F22-D987-4EA1-85FA-CD20BC1A4AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF2D0F22-D987-4EA1-85FA-CD20BC1A4AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF2D0F22-D987-4EA1-85FA-CD20BC1A4AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43349C98-66CB-4B56-AB0E-0060861CE5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43349C98-66CB-4B56-AB0E-0060861CE5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43349C98-66CB-4B56-AB0E-0060861CE5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43349C98-66CB-4B56-AB0E-0060861CE5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91B802CB-CA61-485C-9415-29EA230C2A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91B802CB-CA61-485C-9415-29EA230C2A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91B802CB-CA61-485C-9415-29EA230C2A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91B802CB-CA61-485C-9415-29EA230C2A1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

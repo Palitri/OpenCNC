@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{91B802CB-CA61-485C-9415-29EA230C2A1E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CNCScript</RootNamespace>
+    <AssemblyName>CNCScript</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\CNCScriptCommandGo.cs" />
+    <Compile Include="Commands\CNCScriptCommandSetToolPowerMode.cs" />
+    <Compile Include="Commands\CNCScriptCommandMapDevice.cs" />
+    <Compile Include="Commands\CNCScriptCommandDriveLinear.cs" />
+    <Compile Include="Commands\CNCScriptCommandDriveSine.cs" />
+    <Compile Include="Commands\CNCScriptCommandDrive.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Commands\CNCScriptCommandArc.cs" />
+    <Compile Include="Commands\CNCScriptCommandBegin.cs" />
+    <Compile Include="Commands\CNCScriptCommandBezier.cs" />
+    <Compile Include="Commands\CNCScriptCommandEnd.cs" />
+    <Compile Include="Commands\CNCScriptCommandExecute.cs" />
+    <Compile Include="Commands\CNCScriptCommandIssueMotorTurning.cs" />
+    <Compile Include="Commands\CNCScriptCommandPolyline.cs" />
+    <Compile Include="CNCScriptCommandResult.cs" />
+    <Compile Include="CNCScriptCommandResultType.cs" />
+    <Compile Include="Commands\CNCScriptCommandSetMotorsPowerMode.cs" />
+    <Compile Include="Commands\CNCScriptCommandSetMotorsStepMode.cs" />
+    <Compile Include="Commands\CNCScriptCommandSetPower.cs" />
+    <Compile Include="Commands\CNCScriptCommandSetPowerMode.cs" />
+    <Compile Include="Commands\CNCScriptCommandSetSpeed.cs" />
+    <Compile Include="Commands\CNCScriptCommandTone.cs" />
+    <Compile Include="Commands\CNCScriptCommandTurn.cs" />
+    <Compile Include="Commands\CNCScriptCommandWait.cs" />
+    <Compile Include="CNCScriptEngine.cs" />
+    <Compile Include="CNCScriptUtils.cs" />
+    <Compile Include="ICNCScriptCommand.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CNCDriver\CNCDriver.csproj">
+      <Project>{af2d0f22-d987-4ea1-85fa-cd20bc1a4afe}</Project>
+      <Name>CNCDriver</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
