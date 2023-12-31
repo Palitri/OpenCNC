@@ -89,7 +89,7 @@ namespace CNCPlotter
         {
             CNCVector move = SVGToCNCVector(vector);
 
-            if ((move.X == 0.0f) && (move.Y == 0.0f) && (move.Z == 0.0f))
+            if ((move.X != 0.0f) || (move.Y != 0.0f) || (move.Z != 0.0f))
             {
                 this.cnc.SetSpeed(this.settings.MoveSpeed);
                 this.cnc.SetPower(this.settings.OffPower);
