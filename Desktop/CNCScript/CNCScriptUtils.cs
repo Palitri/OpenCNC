@@ -49,7 +49,7 @@ namespace Palitri.CNCScript
 
         public static bool ParseBool(string parameter, out bool result)
         {
-            string[] keywords = new string[] { "true", "false", "1", "0", "on", "off", "enable", "disable", "enabled", "disabled" };
+            string[] keywords = new string[] { "true", "false", "1", "0", "on", "off", "enable", "disable", "enabled", "disabled", "yes", "no" };
             int count = keywords.Length;
 
             for (int i = 0; i < count; i++)

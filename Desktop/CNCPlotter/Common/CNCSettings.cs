@@ -38,31 +38,35 @@ namespace Palitri.CNCPlotter.Common
         public float TestingPower { get; set; }
 
         [Category("Application"), PropertyOrder(5)]
-        [Description("For tools which to disengage while tool is not actively working, this property lifts the tool. In units")]
+        [Description("For tools which have to disengage while tool is not actively working, this property lifts the tool. In units")]
         public float DisengagementDistance { get; set; }
 
         [Category("Application"), PropertyOrder(6)]
+        [Description("For tools, which have to 'dig in' before start active work, this property brings the tool close to the workpiece and then back. In units.")]
+        public float EngagementDistance { get; set; }
+
+        [Category("Application"), PropertyOrder(7)]
         [Description("The speed at which the power tool should move while actively working. In units per second")]
         public float WorkSpeed { get; set; }
 
-        [Category("Application"), PropertyOrder(7)]
+        [Category("Application"), PropertyOrder(8)]
         [Description("The speed at which the power tool should move while not actively working, when only transporting the power tool from one location to another. In units per second")]
         public float MoveSpeed { get; set; }
 
-        [Category("Application"), PropertyOrder(8)]
+        [Category("Application"), PropertyOrder(9)]
         [Description("The normal speed at which the power tool should move when a manual translation is issued. In units per second")]
         public float ManualSpeed { get; set; }
 
-        [Category("Application"), PropertyOrder(9)]
+        [Category("Application"), PropertyOrder(10)]
         [Description("The fine speed at which the power tool should move when a manual translation is issued. In units per second")]
         public float ManualSpeedFine { get; set; }
 
-        [Category("Application"), PropertyOrder(10)]
+        [Category("Application"), PropertyOrder(11)]
         [Description("Determines whether motors should be powered off while the machine is idle")]
         public bool PowerOffMotorsWhenIdle { get; set; }
 
         private CNCLengthUnitType unitType;
-        [Category("Application"), PropertyOrder(11)]
+        [Category("Application"), PropertyOrder(12)]
         [Description("Type of length measurement / dimension unit")]
         public CNCLengthUnitType UnitType {
             get
@@ -243,6 +247,7 @@ namespace Palitri.CNCPlotter.Common
             this.IdlePower = 0.0f;
             this.TestingPower = 0.001f;
             this.DisengagementDistance = 20.0f;
+            this.EngagementDistance = 0.0f;
             this.WorkSpeed = 10.0f;
             this.MoveSpeed = 15.0f;
             this.ManualSpeed = 30.0f;

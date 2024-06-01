@@ -15,7 +15,7 @@ namespace CNCPlotter
 
     /// <summary>
     /// This is a legacy plotting device, which starts the tool each time a new primitive is to be rendered and shuts it down once the primitive is rendered.
-    /// In contrast, the new device starts the tool, renders multiple primitives and shuts it down only when it needs to move without working or when rendering complete.
+    /// In contrast, the new device starts the tool, renders multiple primitives and shuts it down only when it needs to move without working or when rendering completes.
     /// </summary>
     public class CNCPlotterGraphicsDevice_NonContinuous : IGraphicsDevice
     {

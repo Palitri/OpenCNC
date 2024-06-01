@@ -99,7 +99,16 @@ namespace CNCPlotter
                     this.cnc.Polyline(new CNCVector[] { new CNCVector(0.0f, 0.0f, this.settings.DisengagementDistance), move, new CNCVector(0.0f, 0.0f, -this.settings.DisengagementDistance) });
 
                 this.cnc.SetSpeed(this.settings.WorkSpeed);
-                this.cnc.SetPower(this.settings.OnPower);
+                if (this.settings.EngagementDistance == 0.0f)
+                {
+                    this.cnc.SetPower(this.settings.OnPower);
+                }
+                else
+                {
+                    this.cnc.Polyline(new CNCVector[] { new CNCVector(0.0f, 0.0f, -this.settings.EngagementDistance)});
+                    this.cnc.SetPower(this.settings.OnPower);
+                    this.cnc.Polyline(new CNCVector[] { new CNCVector(0.0f, 0.0f, this.settings.EngagementDistance) });
+                }
             }
 
             this.cnc.End();
