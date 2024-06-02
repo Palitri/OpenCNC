@@ -41,6 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\PathElements\IPathElement.cs" />
+    <Compile Include="Elements\PathElements\PathA.cs" />
+    <Compile Include="Elements\PathElements\PathC.cs" />
+    <Compile Include="Elements\PathElements\PathH.cs" />
+    <Compile Include="Elements\PathElements\PathL.cs" />
+    <Compile Include="Elements\PathElements\PathM.cs" />
+    <Compile Include="Elements\PathElements\PathQ.cs" />
+    <Compile Include="Elements\PathElements\PathS.cs" />
+    <Compile Include="Elements\PathElements\PathT.cs" />
+    <Compile Include="Elements\PathElements\PathV.cs" />
+    <Compile Include="Elements\PathElements\PathZ.cs" />
+    <Compile Include="Elements\PathElements\SVGPatchRenderingParameters.cs" />
     <Compile Include="Elements\SVGText.cs" />
     <Compile Include="Elements\SVGPolygon.cs" />
     <Compile Include="Elements\SVGGroup.cs" />
@@ -61,5 +73,6 @@
       <Name>Graphics</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
