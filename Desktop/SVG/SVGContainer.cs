@@ -62,6 +62,11 @@ namespace Palitri.SVG
                         float.TryParse(values[1], out this.viewBoxY);
                         float.TryParse(values[2], out this.viewBoxWidth);
                         float.TryParse(values[3], out this.viewBoxHeight);
+
+                        if (!this.HasAttribute("width"))
+                            this.width = this.viewBoxWidth;
+                        if (!this.HasAttribute("height"))
+                            this.height = this.viewBoxHeight;
                     }
                 }
                 else
@@ -77,6 +82,10 @@ namespace Palitri.SVG
                 return;
             }
         }
+
+        public float Width => this.width;
+
+        public float Height => this.height;
 
         public void Render(IGraphicsDevice g)
         {

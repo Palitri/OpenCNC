@@ -8,6 +8,9 @@ namespace Palitri.Graphics
 {
     public interface IGraphicsObject
     {
+        float Width { get; }
+        float Height { get; }
+
         void Render(IGraphicsDevice g);
         void Render(float x, float y, IGraphicsDevice g);
         void Render(float x, float y, float scale, IGraphicsDevice g);

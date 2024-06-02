@@ -251,13 +251,11 @@ namespace CNCPlotter
             if (this.svg == null)
                 return;
 
-            SVGContainer graphic = (SVGContainer)this.svg;
-
-            float hzoom = fillFactor * this.viewer.mainScreenWidth / graphic.viewBoxWidth;
-            float vzoom = fillFactor * this.viewer.mainScreenHeight / graphic.viewBoxHeight;
+            float hzoom = fillFactor * this.viewer.mainScreenWidth / this.svg.Width;
+            float vzoom = fillFactor * this.viewer.mainScreenHeight / this.svg.Height;
             this.viewer.zoom = Math.Min(hzoom, vzoom);
-            this.viewer.offset.X = (this.viewer.mainScreenWidth / this.viewer.zoom - graphic.viewBoxWidth) / 2.0f;
-            this.viewer.offset.Y = (this.viewer.mainScreenHeight / this.viewer.zoom - graphic.viewBoxHeight) / 2.0f;
+            this.viewer.offset.X = (this.viewer.mainScreenWidth / this.viewer.zoom - this.svg.Width) / 2.0f;
+            this.viewer.offset.Y = (this.viewer.mainScreenHeight / this.viewer.zoom - this.svg.Height) / 2.0f;
 
             this.cbZoom.Text = string.Format("{0:0.0}%", this.Zoom * 100);
 
@@ -273,7 +271,7 @@ namespace CNCPlotter
 
             if (this.presentMain)
                 if (this.svg != null)
-                    this.svg.Render(this.viewer.offset.X * this.viewer.zoom, this.viewer.mainScreenHeight - (((SVGContainer)this.svg).viewBoxHeight + this.viewer.offset.Y) * this.viewer.zoom, this.viewer.zoom, this.canvasRenderer);
+                    this.svg.Render(this.viewer.offset.X * this.viewer.zoom, this.viewer.mainScreenHeight - (this.svg.Height + this.viewer.offset.Y) * this.viewer.zoom, this.viewer.zoom, this.canvasRenderer);
 
             if (this.originMode && !this.settingOriginMode)
             {
@@ -356,7 +354,7 @@ namespace CNCPlotter
             {
                 PickerGraphicsDevice p = new PickerGraphicsDevice();
                 p.PickPoint.x = this.viewer.pointer.X;
-                p.PickPoint.y = ((SVGContainer)this.svg).height - this.viewer.pointer.Y;
+                p.PickPoint.y = this.svg.Height - this.viewer.pointer.Y;
                 p.MaxPickingDistance = 4.0f / this.viewer.zoom;
                 this.svg.Render(p);
                 this.pbRender.Cursor = p.IsPicked ? Cursors.Hand : this.settingOriginMode ? this.setOriginCursor : Cursors.Cross;
@@ -431,7 +429,7 @@ namespace CNCPlotter
         private void OpenFile(string fileName)
         {
             this.svg = new SVGContainer(fileName);
-            this.viewer.workArea = new RectangleF(((SVGContainer)this.svg).viewBoxX, ((SVGContainer)this.svg).viewBoxY, ((SVGContainer)this.svg).viewBoxWidth, ((SVGContainer)this.svg).viewBoxHeight);
+            this.viewer.workArea = new RectangleF(0.0f, 0.0f, this.svg.Width, this.svg.Height);
             this.CenterView();
 
             this.EstimatePlottingTime();
@@ -497,10 +495,10 @@ namespace CNCPlotter
                     Thread.CurrentThread.IsBackground = true;
 
                     this.plottingDevice = new CNCPlotterGraphicsDevice(this.cnc, this.cncSettings);
-                    plottingDevice.SetOrigin(this.originPoint.x, this.originPoint.y - ((SVGContainer)this.svg).height);
+                    plottingDevice.SetOrigin(this.originPoint.x, this.originPoint.y - this.svg.Height);
 
                     plottingDevice.RenderPrimitive += cncRenderer_RenderPrimitive;
-                    this.svg.Render(0, 0, ((SVGContainer)this.svg).width, -((SVGContainer)this.svg).height, plottingDevice);
+                    this.svg.Render(0, 0, this.svg.Width, -this.svg.Height, plottingDevice);
 
                     this.canvasRenderer.SetHighlight();
                     this.InvokeRender(false, false, true, false);
@@ -640,7 +638,7 @@ namespace CNCPlotter
         private void EstimatePlottingTime()
         {
             CNCPlotTimeEstimationGraphicsDevice t = new CNCPlotTimeEstimationGraphicsDevice(this.cncSettings);
-            t.SetOrigin(0.0f, -((SVGContainer)this.svg).height);
+            t.SetOrigin(0.0f, -this.svg.Height);
             this.svg.Render(t);
             this.lblPlottingTimeEstimation.Text = this.TimeSpanToString(TimeSpan.FromSeconds(t.ProjectedTime));
         }

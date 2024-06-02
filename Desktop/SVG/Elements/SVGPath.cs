@@ -3,6 +3,8 @@ using SVG.Elements.PathElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Palitri.SVG.Elements
 {
@@ -31,7 +33,8 @@ namespace Palitri.SVG.Elements
                     int elementLength = pos - lastPos;
                     if (elementLength != 0)
                     {
-                        string[] data = this.d.Substring(lastPos + 1, elementLength - 1).Split(dataSplitters, StringSplitOptions.RemoveEmptyEntries);
+                        // Path data is a series of sequence of path elements, each a signature character followed by numbers. Numbers can be divided by varuios data splitters, as well as by nothing, if for example the next digit is negative and the minus sign can act as a divider
+                        string[] data = this.d.Substring(lastPos + 1, elementLength - 1).Replace("-", ",-").Split(dataSplitters, StringSplitOptions.RemoveEmptyEntries);
                         char signature = this.d[lastPos];
                         bool isRelative = char.IsLower(signature);
                         if (isRelative)

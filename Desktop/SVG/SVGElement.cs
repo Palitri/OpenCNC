@@ -164,11 +164,16 @@ namespace Palitri.SVG
             return transform;
         }
 
+        public bool HasAttribute(string attributeName)
+        {
+            return this.attributes.ContainsKey(attributeName);
+        }
+
         public T GetAttribute<T>(string attributeName, T defaultValue = default(T))
         {
             try
             {
-                if (this.attributes.ContainsKey(attributeName))
+                if (this.HasAttribute(attributeName))
                 {
                     string value = this.attributes[attributeName];
                     value = value.Replace("mm", string.Empty).Replace("px", string.Empty);
