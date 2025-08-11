@@ -111,24 +111,24 @@ namespace Palitri.SVG
         {
             g.Begin();
 
-            Matrix t = new Matrix();
-            Matrix.CreatePlot(t, x, y, width / this.width, height / this.height, angle);
+            Matrix3 t = new Matrix3();
+            Matrix3.CreatePlot(t, x, y, width / this.width, height / this.height, angle);
 
             this.Render(t, g);
 
             g.End();
         }
 
-        public override void Render(Matrix transform, IGraphicsDevice g)
+        public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
-            Matrix t1 = new Matrix();
-            Matrix t2 = new Matrix();
+            Matrix3 t1 = new Matrix3();
+            Matrix3 t2 = new Matrix3();
 
-            Matrix.CreateViewport(t1, this.viewBoxX, this.viewBoxY, this.viewBoxWidth, this.viewBoxHeight);
-            Matrix.CreatePlot(t2, this.x, this.y, this.width, this.height);
-            Matrix.Multiply(t1, t1, t2);
+            Matrix3.CreateViewport(t1, this.viewBoxX, this.viewBoxY, this.viewBoxWidth, this.viewBoxHeight);
+            Matrix3.CreatePlot(t2, this.x, this.y, this.width, this.height);
+            Matrix3.Multiply(t1, t1, t2);
 
-            Matrix.Multiply(t1, t1, transform);
+            Matrix3.Multiply(t1, t1, transform);
 
             base.Render(t1, g);
         }

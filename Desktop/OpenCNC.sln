@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36310.24
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SVG", "SVG\SVG.csproj", "{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioSynthesis", "AudioSynthesis\AudioSynthesis.csproj", "{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphics", "Graphics\Graphics.csproj", "{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCNC.App", "OpenCNC.App\OpenCNC.App.csproj", "{F51EB3F2-C35D-4244-9265-988835AA6451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCNC.Driver", "OpenCNC.Driver\OpenCNC.Driver.csproj", "{BE7E5F8B-CB00-4C5E-A99B-F97648901799}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCNC.Script", "OpenCNC.Script\OpenCNC.Script.csproj", "{4A8ADAF7-24EA-4F0C-8559-8A3D9303BFC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCNC.Basis", "OpenCNC.Basis\OpenCNC.Basis.csproj", "{ABEB819F-8EEC-483D-A6CF-A4895DF4A1FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03B9FE0E-785C-4BA9-8F13-2AB3D9D2F91E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9E1CC67-0A36-42F4-BD71-095BD11D80CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F81AD66-0E00-45FC-A8C2-DC930D2250A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F51EB3F2-C35D-4244-9265-988835AA6451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51EB3F2-C35D-4244-9265-988835AA6451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51EB3F2-C35D-4244-9265-988835AA6451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51EB3F2-C35D-4244-9265-988835AA6451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE7E5F8B-CB00-4C5E-A99B-F97648901799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE7E5F8B-CB00-4C5E-A99B-F97648901799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE7E5F8B-CB00-4C5E-A99B-F97648901799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE7E5F8B-CB00-4C5E-A99B-F97648901799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A8ADAF7-24EA-4F0C-8559-8A3D9303BFC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A8ADAF7-24EA-4F0C-8559-8A3D9303BFC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A8ADAF7-24EA-4F0C-8559-8A3D9303BFC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A8ADAF7-24EA-4F0C-8559-8A3D9303BFC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABEB819F-8EEC-483D-A6CF-A4895DF4A1FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABEB819F-8EEC-483D-A6CF-A4895DF4A1FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABEB819F-8EEC-483D-A6CF-A4895DF4A1FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABEB819F-8EEC-483D-A6CF-A4895DF4A1FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {346F1921-D673-45A2-BBB2-C1657612A9EC}
+	EndGlobalSection
+EndGlobal

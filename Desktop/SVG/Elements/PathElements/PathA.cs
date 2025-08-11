@@ -2,7 +2,7 @@
 using System;
 using static Palitri.SVG.Elements.SVGPath;
 
-namespace SVG.Elements.PathElements
+namespace Palitri.SVG.Elements.PathElements
 {
     public class PathA : IPathElement
     {
@@ -10,7 +10,7 @@ namespace SVG.Elements.PathElements
         public float rx, ry, angle, x, y;
         public bool sweep, largeSweep;
 
-        public void Render(Matrix transform, IGraphicsDevice g, SVGPathRenderingParameters renderingParams)
+        public void Render(Matrix3 transform, IGraphicsDevice g, SVGPathRenderingParameters renderingParams)
         {
             float endX = this.relative ? renderingParams.pos.x + this.x : this.x;
             float endY = this.relative ? renderingParams.pos.x + this.y : this.y;
@@ -18,8 +18,8 @@ namespace SVG.Elements.PathElements
             float cx, cy, startAngle, endAngle;
             float angle = (float)Math.PI * this.angle / 180.0f;
             SVGArcToCenterParam(renderingParams.pos.x, renderingParams.pos.y, this.rx, this.ry, angle, this.largeSweep, this.sweep, endX, endY, out cx, out cy, out startAngle, out endAngle);
-            Vector semiMajor = new Vector((float)Math.Cos(angle) * this.rx, (float)Math.Sin(angle) * this.rx);
-            Vector semiMinor = new Vector(-(float)Math.Sin(angle) * this.ry, (float)Math.Cos(angle) * this.ry);
+            Vector2 semiMajor = new Vector2((float)Math.Cos(angle) * this.rx, (float)Math.Sin(angle) * this.rx);
+            Vector2 semiMinor = new Vector2(-(float)Math.Sin(angle) * this.ry, (float)Math.Cos(angle) * this.ry);
 
             g.Arc(transform.Transform(cx, cy), transform.TransformDimensions(semiMajor), transform.TransformDimensions(semiMinor), startAngle, endAngle);
 

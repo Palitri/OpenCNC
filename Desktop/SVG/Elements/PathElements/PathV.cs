@@ -1,7 +1,7 @@
 ﻿using Palitri.Graphics;
 using static Palitri.SVG.Elements.SVGPath;
 
-namespace SVG.Elements.PathElements
+namespace Palitri.SVG.Elements.PathElements
 {
     /// <summary>
     /// Vertical line
@@ -11,17 +11,17 @@ namespace SVG.Elements.PathElements
         public bool relative;
         public float y;
 
-        public void Render(Matrix transform, IGraphicsDevice g, SVGPathRenderingParameters renderingParams)
+        public void Render(Matrix3 transform, IGraphicsDevice g, SVGPathRenderingParameters renderingParams)
         {
             if (this.relative)
             {
-                g.Polyline(new Vector[] { transform.Transform(renderingParams.pos), transform.Transform(renderingParams.pos.x, renderingParams.pos.y + this.y) });
+                g.Polyline(new Vector2[] { transform.Transform(renderingParams.pos), transform.Transform(renderingParams.pos.x, renderingParams.pos.y + this.y) });
 
                 renderingParams.pos.y += this.y;
             }
             else
             {
-                g.Polyline(new Vector[] { transform.Transform(renderingParams.pos), transform.Transform(renderingParams.pos.x, this.y) });
+                g.Polyline(new Vector2[] { transform.Transform(renderingParams.pos), transform.Transform(renderingParams.pos.x, this.y) });
 
                 renderingParams.pos.y = this.y;
             }

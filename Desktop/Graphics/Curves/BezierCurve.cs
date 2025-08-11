@@ -9,11 +9,11 @@ namespace Palitri.Graphics.Curves
 {
     public class BezierCurve
     {
-        private Vector[] controlPoints;
-        private Vector[] points;
+        private Vector2[] controlPoints;
+        private Vector2[] points;
         private int controlPointsCount;
 
-        public BezierCurve(Vector[] controlPoints)
+        public BezierCurve(Vector2[] controlPoints)
         {
             this.controlPoints = controlPoints;
 
@@ -21,17 +21,17 @@ namespace Palitri.Graphics.Curves
 
             if ((this.points == null) || (this.points.Length < controlPointsCount - 1))
             {
-                this.points = new Vector[controlPointsCount - 1];
+                this.points = new Vector2[controlPointsCount - 1];
                 for (int i = 0; i < controlPointsCount - 1; i++)
-                    this.points[i] = new Vector();
+                    this.points[i] = new Vector2();
             }
         }
 
-        public Vector Get(float t)
+        public Vector2 Get(float t)
         {
             int initialStage = controlPointsCount - 1;
             if (initialStage <= 0)
-                return new Vector(controlPoints[0].x, controlPoints[0].y);
+                return new Vector2(controlPoints[0].x, controlPoints[0].y);
 
             for (int i = 0; i < initialStage; i++)
             {
@@ -48,7 +48,7 @@ namespace Palitri.Graphics.Curves
                 }
             }
 
-            return new Vector(this.points[0].x, this.points[0].y);
+            return new Vector2(this.points[0].x, this.points[0].y);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AudioSynthesis
+namespace Palitri.AudioSynthesis
 {
     public class AudioSynthesizer
     {
@@ -33,12 +33,17 @@ namespace AudioSynthesis
 
         public float A4Frequency { get; set; }
 
-        public float Tempo { get; set; }
+        private float secondsPerFullBeat;
+        public float Tempo
+        {
+            get { return this.secondsPerFullBeat / (4.0f * 60.0f); }
+            set { this.secondsPerFullBeat = (4.0f * 60.0f) / value; }
+        }
 
         public AudioSynthesizer(IAudioDevice audioDevice)
         {
             this.A4Frequency = 440.0f;
-            this.Tempo = 1.0f;
+            this.Tempo = 120.0f;
 
             this.audioDevice = audioDevice;
         }
@@ -62,14 +67,14 @@ namespace AudioSynthesis
 
         public void Pause(float duration)
         {
-            this.audioDevice.Silence(duration);
+            this.audioDevice.Silence(duration * this.secondsPerFullBeat);
         }
 
         public void Play(Tone tone, int octave, float duration)
         {
             float frequency = this.GetToneFrequency(tone, octave);
 
-            this.audioDevice.Synthesize(frequency, duration);
+            this.audioDevice.Synthesize(frequency, duration * this.secondsPerFullBeat);
         }
 
         public void Play(INote note)

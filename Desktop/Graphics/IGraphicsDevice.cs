@@ -11,8 +11,8 @@ namespace Palitri.Graphics
         void Begin();
         void End();
 
-        void Polyline(Vector[] vertices);
-        void Arc(Vector origin, Vector semiMajorAxis, Vector semiMinorAxis, float startAngle, float endAngle);
-        void Bezier(Vector[] vectors);
+        void Polyline(Vector2[] vertices);
+        void Arc(Vector2 origin, Vector2 semiMajorAxis, Vector2 semiMinorAxis, float startAngle, float endAngle);
+        void Bezier(Vector2[] vectors);
     }
 }

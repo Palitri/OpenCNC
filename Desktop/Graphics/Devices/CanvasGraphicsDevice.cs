@@ -29,12 +29,12 @@ namespace Palitri.Graphics.Devices
         {
         }
 
-        public virtual void Polyline(Vector[] vertices)
+        public virtual void Polyline(Vector2[] vertices)
         {
             this.canvasGraphics.DrawLines(this.canvasPen, vertices.Select(p => new PointF(p.x, p.y)).ToArray());
         }
 
-        public virtual void Arc(Vector origin, Vector semiMajorAxis, Vector semiMinorAxis, float startAngle, float endAngle)
+        public virtual void Arc(Vector2 origin, Vector2 semiMajorAxis, Vector2 semiMinorAxis, float startAngle, float endAngle)
         {
             ArcCurve arc = new ArcCurve(origin, semiMajorAxis, semiMinorAxis, startAngle, endAngle);
 
@@ -51,7 +51,7 @@ namespace Palitri.Graphics.Devices
             this.canvasGraphics.DrawLines(this.canvasPen, points);
         }
 
-        public virtual void Bezier(Vector[] vectors)
+        public virtual void Bezier(Vector2[] vectors)
         {
             const int steps = 100;
 

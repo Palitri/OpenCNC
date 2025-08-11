@@ -1,10 +1,10 @@
 ﻿using Palitri.Graphics;
 using static Palitri.SVG.Elements.SVGPath;
 
-namespace SVG.Elements.PathElements
+namespace Palitri.SVG.Elements.PathElements
 {
     public interface IPathElement
     {
-        void Render(Matrix transform, IGraphicsDevice g, SVGPathRenderingParameters renderingParams);
+        void Render(Matrix3 transform, IGraphicsDevice g, SVGPathRenderingParameters renderingParams);
     }
 }

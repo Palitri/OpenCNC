@@ -19,13 +19,13 @@ namespace Palitri.SVG.Elements
 
         public List<SVGElement> elements = new List<SVGElement>();
 
-        public override void Render(Matrix transform, IGraphicsDevice g) 
+        public override void Render(Matrix3 transform, IGraphicsDevice g) 
         {
-            Matrix transformation = new Matrix();
+            Matrix3 transformation = new Matrix3();
 
             foreach (SVGElement element in this.elements)
             {
-                Matrix.Multiply(transformation, element.GetTransformMatrix(), transform);
+                Matrix3.Multiply(transformation, element.GetTransformMatrix(), transform);
 
                 element.Render(transformation, g);
             }

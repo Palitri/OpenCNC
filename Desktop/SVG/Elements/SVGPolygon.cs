@@ -32,9 +32,9 @@ namespace Palitri.SVG.Elements
             }
         }
 
-        public override void Render(Matrix transform, IGraphicsDevice g)
+        public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
-            g.Polyline(this.points.Select(p => transform.Transform(p.Item1, p.Item2)).Concat(new Vector[] { transform.Transform(points[0].Item1, points[0].Item2) }).ToArray());
+            g.Polyline(this.points.Select(p => transform.Transform(p.Item1, p.Item2)).Concat(new Vector2[] { transform.Transform(points[0].Item1, points[0].Item2) }).ToArray());
         }
     }
 }

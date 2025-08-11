@@ -24,7 +24,7 @@ namespace Palitri.SVG
 
         public virtual void UpdateProperties() { }
 
-        public abstract void Render(Matrix transform, IGraphicsDevice g);
+        public abstract void Render(Matrix3 transform, IGraphicsDevice g);
 
         public virtual bool Load(XmlTextReader xmlReader)
         {
@@ -78,10 +78,10 @@ namespace Palitri.SVG
             return false;
         }
 
-        public Matrix GetTransformMatrix()
+        public Matrix3 GetTransformMatrix()
         {
-            Matrix transform = new Matrix();
-            Matrix t = new Matrix();
+            Matrix3 transform = new Matrix3();
+            Matrix3 t = new Matrix3();
 
             string transformString;
             if (this.attributes.TryGetValue("transform", out transformString))
@@ -102,14 +102,14 @@ namespace Palitri.SVG
                         {
                             if (transformType == "translate")
                             {
-                                Matrix.CreateTranslation(t, parameters.Count > 0 ? parameters[0] : 0.0f, parameters.Count > 1 ? parameters[1] : 0.0f);
-                                Matrix.Multiply(transform, t, transform);
+                                Matrix3.CreateTranslation(t, parameters.Count > 0 ? parameters[0] : 0.0f, parameters.Count > 1 ? parameters[1] : 0.0f);
+                                Matrix3.Multiply(transform, t, transform);
                             }
 
                             else if (transformType == "scale")
                             {
-                                Matrix.CreateScale(t, parameters.Count > 0 ? parameters[0] : 1.0f, parameters.Count > 1 ? parameters[1] : parameters.Count > 0 ? parameters[0] : 1.0f);
-                                Matrix.Multiply(transform, t, transform);
+                                Matrix3.CreateScale(t, parameters.Count > 0 ? parameters[0] : 1.0f, parameters.Count > 1 ? parameters[1] : parameters.Count > 0 ? parameters[0] : 1.0f);
+                                Matrix3.Multiply(transform, t, transform);
                             }
 
                             else if (transformType == "rotate")
@@ -117,26 +117,26 @@ namespace Palitri.SVG
                                 float x = parameters.Count > 1 ? parameters[1] : 0.0f;
                                 float y = parameters.Count > 2 ? parameters[2] : x;
 
-                                Matrix.CreateTranslation(t, x, y);
-                                Matrix.Multiply(transform, t, transform);
+                                Matrix3.CreateTranslation(t, x, y);
+                                Matrix3.Multiply(transform, t, transform);
 
-                                Matrix.CreateRotation(t, (float)Math.PI * (parameters.Count > 0 ? parameters[0] : 0.0f) / 180.0f);
-                                Matrix.Multiply(transform, t, transform);
+                                Matrix3.CreateRotation(t, (float)Math.PI * (parameters.Count > 0 ? parameters[0] : 0.0f) / 180.0f);
+                                Matrix3.Multiply(transform, t, transform);
 
-                                Matrix.CreateTranslation(t, -x, -y);
-                                Matrix.Multiply(transform, t, transform);
+                                Matrix3.CreateTranslation(t, -x, -y);
+                                Matrix3.Multiply(transform, t, transform);
                             }
 
                             else if (transformType == "skewx")
                             {
-                                Matrix.CreateSkewX(t, (float)Math.PI * (parameters.Count > 0 ? parameters[0] : 0.0f) / 180.0f);
-                                Matrix.Multiply(transform, t, transform);
+                                Matrix3.CreateSkewX(t, (float)Math.PI * (parameters.Count > 0 ? parameters[0] : 0.0f) / 180.0f);
+                                Matrix3.Multiply(transform, t, transform);
                             }
 
                             else if (transformType == "skewy")
                             {
-                                Matrix.CreateSkewY(t, (float)Math.PI * (parameters.Count > 0 ? parameters[0] : 0.0f) / 180.0f);
-                                Matrix.Multiply(transform, t, transform);
+                                Matrix3.CreateSkewY(t, (float)Math.PI * (parameters.Count > 0 ? parameters[0] : 0.0f) / 180.0f);
+                                Matrix3.Multiply(transform, t, transform);
                             }
 
                             else if (transformType == "matrix")
@@ -147,7 +147,7 @@ namespace Palitri.SVG
                                 t.m22 = parameters.Count > 3 ? parameters[3] : 1.0f;
                                 t.m31 = parameters.Count > 4 ? parameters[4] : 0.0f;
                                 t.m32 = parameters.Count > 5 ? parameters[5] : 0.0f;
-                                Matrix.Multiply(transform, t, transform);
+                                Matrix3.Multiply(transform, t, transform);
                             }
 
                         }

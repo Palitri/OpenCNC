@@ -1,5 +1,5 @@
 ﻿using Palitri.Graphics;
-using SVG.Elements.PathElements;
+using Palitri.SVG.Elements.PathElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,7 +120,7 @@ namespace Palitri.SVG.Elements
             }
         }
 
-        public override void Render(Matrix transform, IGraphicsDevice g)
+        public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
             SVGPathRenderingParameters renderParams = new SVGPathRenderingParameters();
 

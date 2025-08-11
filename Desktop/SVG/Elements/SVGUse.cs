@@ -29,13 +29,13 @@ namespace Palitri.SVG.Elements
             this.reference = this.FindReference(this.href);
         }
 
-        public override void Render(Matrix transform, IGraphicsDevice g)
+        public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
             if (this.reference != null)
             {
-                Matrix transformation = new Matrix();
-                Matrix.CreateTranslation(transformation, this.x, this.y);
-                Matrix.Multiply(transformation, transformation, transform);
+                Matrix3 transformation = new Matrix3();
+                Matrix3.CreateTranslation(transformation, this.x, this.y);
+                Matrix3.Multiply(transformation, transformation, transform);
 
                 this.reference.Render(transformation, g);
             }

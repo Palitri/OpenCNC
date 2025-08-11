@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\led_amber_soft.png" />
+    <Content Include="Resources\led_blue_soft.png" />
+    <Content Include="Resources\led_green_soft.png" />
+    <Content Include="Resources\led_red.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenIoT.Lib" Version="0.0.9" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AudioSynthesis\AudioSynthesis.csproj" />
+    <ProjectReference Include="..\Graphics\Graphics.csproj" />
+    <ProjectReference Include="..\OpenCNC.Driver\OpenCNC.Driver.csproj" />
+    <ProjectReference Include="..\OpenCNC.Script\OpenCNC.Script.csproj" />
+    <ProjectReference Include="..\SVG\SVG.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Components\RoundButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Forms\ConsoleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\ManualControlsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

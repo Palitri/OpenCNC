@@ -20,9 +20,9 @@ namespace Palitri.SVG.Elements
             this.y2 = this.GetAttribute<float>("y2");
         }
 
-        public override void Render(Matrix transform, IGraphicsDevice g)
+        public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
-            g.Polyline(new Vector[] { transform.Transform(this.x1, this.y1), transform.Transform(this.x2, this.y2) });
+            g.Polyline(new Vector2[] { transform.Transform(this.x1, this.y1), transform.Transform(this.x2, this.y2) });
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Palitri.SVG.Elements
             this.ry = this.GetAttribute<float>("ry");
         }
 
-        public override void Render(Matrix transform, IGraphicsDevice g)
+        public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
             g.Arc(transform.Transform(this.x, this.y), transform.TransformDimensions(this.rx, 0.0f), transform.TransformDimensions(0.0f, this.ry), 0.0f, (float)Math.PI * 2.0f);
         }

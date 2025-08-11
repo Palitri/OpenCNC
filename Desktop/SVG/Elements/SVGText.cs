@@ -10,7 +10,7 @@ namespace Palitri.SVG.Elements
     {
         public override string NodeName { get { return "text"; } }
 
-        public override void Render(Matrix transform, IGraphicsDevice g)
+        public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
         }
     }
