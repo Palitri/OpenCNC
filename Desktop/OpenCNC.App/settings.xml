@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenCNCAppSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <StepMode>Quarter</StepMode>
+  <OnPower>0.6</OnPower>
+  <OffPower>0.1</OffPower>
+  <IdlePower>0</IdlePower>
+  <TestingPower>0.001</TestingPower>
+  <DisengagementDistance>20</DisengagementDistance>
+  <EngagementDistance>0</EngagementDistance>
+  <WorkSpeed>10</WorkSpeed>
+  <MoveSpeed>15</MoveSpeed>
+  <ManualSpeed>30</ManualSpeed>
+  <ManualSpeedFine>2</ManualSpeedFine>
+  <PowerOffMotorsWhenIdle>true</PowerOffMotorsWhenIdle>
+  <UnitType>Millimeters</UnitType>
+  <UnitSize>0</UnitSize>
+  <TemperatureUnitType>Kelvin</TemperatureUnitType>
+  <ReturnToOrigin>true</ReturnToOrigin>
+  <DisplaySize>23.8</DisplaySize>
+  <Motor1FullStepsPerTurn>200</Motor1FullStepsPerTurn>
+  <Motor1UnitsPerTurn>8</Motor1UnitsPerTurn>
+  <Motor2FullStepsPerTurn>200</Motor2FullStepsPerTurn>
+  <Motor2UnitsPerTurn>8</Motor2UnitsPerTurn>
+  <Motor3FullStepsPerTurn>200</Motor3FullStepsPerTurn>
+  <Motor3UnitsPerTurn>8</Motor3UnitsPerTurn>
+  <LayerHeight>0</LayerHeight>
+  <FillerTemp>0</FillerTemp>
+  <BaseTemp>0</BaseTemp>
+  <FillSpeed>0</FillSpeed>
+  <Retraction>0</Retraction>
+  <RetractionSpeed>0</RetractionSpeed>
+  <InitSound>false</InitSound>
+</OpenCNCAppSettings>
