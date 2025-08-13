@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 
-namespace OpenCNC.App.Common
+namespace Palitri.OpenCNC.App.Common
 {
     internal class Utils
     {

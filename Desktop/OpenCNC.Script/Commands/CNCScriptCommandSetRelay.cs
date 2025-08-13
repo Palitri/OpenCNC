@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Palitri.OpenCNC.Script.Commands
 {
-    public class CNCScriptCommandTurn : ICNCScriptCommand
+    public class CNCScriptCommandSetRelay : ICNCScriptCommand
     {
         public string Name { get; private set; }
         public List<string> Parameters { get; private set; }
         public bool InfiniteParameters { get; private set; }
 
-        public CNCScriptCommandTurn()
+        public CNCScriptCommandSetRelay()
         {
-            this.Name = "Turn";
-            this.Parameters = new List<string>() { "Motors", "Direction", "Interval", "Steps" };
+            this.Name = "SetRelay";
+            this.Parameters = new List<string>() { "RelayIndex", "Enabled" };
             this.InfiniteParameters = false;
         }
         
@@ -35,20 +35,14 @@ namespace Palitri.OpenCNC.Script.Commands
             if (result.ResultType == CNCScriptCommandResultType.Error)
                 return result;
 
-            int motors, interval, steps;
             string message;
-            CNCRotationDirection direction;
-            if (!ScriptUtils.TryParse<int>(parameters[1], out motors, out message))
+            if (!ScriptUtils.TryParse<int>(parameters[1], out int relayIndex, out message))
                 return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-            if (!ScriptUtils.TryParse<CNCRotationDirection>(parameters[2], out direction, out message))
-                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-            if (!ScriptUtils.TryParse<int>(parameters[3], out interval, out message))
-                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-            if (!ScriptUtils.TryParse<int>(parameters[4], out steps, out message))
+            if (!ScriptUtils.TryParse<bool>(parameters[2], out bool enabled, out message))
                 return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
 
             if (cnc != null)
-                cnc.Turn(motors, direction, interval, steps);
+                cnc.SetRelay(relayIndex, enabled);
 
             return result;
         }

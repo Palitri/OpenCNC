@@ -1,4 +1,4 @@
-﻿namespace OpenCNC.App
+﻿namespace Palitri.OpenCNC.App
 {
     partial class ConsoleForm
     {
@@ -82,7 +82,7 @@
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSend.FlatAppearance.BorderSize = 0;
             this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSend.Image = global::OpenCNC.App.Resources.icon_btn_play;
+            this.btnSend.Image = global::Palitri.OpenCNC.App.Resources.icon_btn_play;
             this.btnSend.Location = new System.Drawing.Point(423, 234);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(32, 32);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCNC.App.Common
+namespace Palitri.OpenCNC.App.Common
 {
     public enum CNCTemperatureUnitType
     {

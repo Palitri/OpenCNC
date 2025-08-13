@@ -8,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCNC.App.Rendering
+namespace Palitri.OpenCNC.App.Rendering
 {
     public class ScriptHintRenderer
     {
         private Bitmap hintBitmap;
-        private Graphics hintBitmapGraphics;
+        private System.Drawing.Graphics hintBitmapGraphics;
         private Color colorHintFunction = Color.FromArgb(1, 144, 52);
         private Color colorHintFunctionParam = Color.FromArgb(0, 93, 147);
         private Color colorHintFunctionParamHighlight = Color.FromArgb(169, 235, 136);
@@ -28,7 +28,7 @@ namespace OpenCNC.App.Rendering
         public ScriptHintRenderer(int width, int height)
         {
             this.hintBitmap = new Bitmap(width, height);
-            this.hintBitmapGraphics = Graphics.FromImage(this.hintBitmap);
+            this.hintBitmapGraphics = System.Drawing.Graphics.FromImage(this.hintBitmap);
         }
 
         public void Render(CNCScriptEngine scriptEngine, string inputCommand, int caretPosition)

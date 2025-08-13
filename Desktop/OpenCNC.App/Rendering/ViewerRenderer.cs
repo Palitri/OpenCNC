@@ -1,4 +1,4 @@
-﻿using OpenCNC.App.Common;
+﻿using Palitri.OpenCNC.App.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCNC.App.Rendering
+namespace Palitri.OpenCNC.App.Rendering
 {
     public class ViewerRenderer
     {
@@ -16,8 +16,8 @@ namespace OpenCNC.App.Rendering
 
         public Color backgroundColor, gridColor, rulersColor, textColor, warningTextColor, zeroTextColor, zeroBackColor, coordLineColorBig, coordLineColorMed, coordLineColorSmall, workAreaMarkerColor;
 
-        private Graphics backBufferGraphics, horizontalStripGraphics, verticalStripGraphics, rulersOriginGraphics;
-        public Graphics mainGraphics;
+        private System.Drawing.Graphics backBufferGraphics, horizontalStripGraphics, verticalStripGraphics, rulersOriginGraphics;
+        public System.Drawing.Graphics mainGraphics;
 
         public int width, height;
         public int mainScreenWidth, mainScreenHeight;
@@ -76,11 +76,11 @@ namespace OpenCNC.App.Rendering
             this.mainScreen = new Bitmap(this.mainScreenWidth, this.mainScreenHeight);
             this.rulersOrigin = new Bitmap(this.rulersSize, this.rulersSize);
 
-            this.backBufferGraphics = Graphics.FromImage(this.backBuffer);
-            this.mainGraphics = Graphics.FromImage(this.mainScreen);
-            this.horizontalStripGraphics = Graphics.FromImage(this.horizontalStrip);
-            this.verticalStripGraphics = Graphics.FromImage(this.verticalStrip);
-            this.rulersOriginGraphics = Graphics.FromImage(this.rulersOrigin);
+            this.backBufferGraphics = System.Drawing.Graphics.FromImage(this.backBuffer);
+            this.mainGraphics = System.Drawing.Graphics.FromImage(this.mainScreen);
+            this.horizontalStripGraphics = System.Drawing.Graphics.FromImage(this.horizontalStrip);
+            this.verticalStripGraphics = System.Drawing.Graphics.FromImage(this.verticalStrip);
+            this.rulersOriginGraphics = System.Drawing.Graphics.FromImage(this.rulersOrigin);
 
             this.PrerenderRulers();
             this.PrerenderMainScreen();
@@ -284,7 +284,7 @@ namespace OpenCNC.App.Rendering
             return new LinearGradientBrush(pStart, pEnd, cStart, cEnd);
         }
 
-        private void FillBitmap(Bitmap b, Graphics g, Color c, bool vertical, bool direction)
+        private void FillBitmap(Bitmap b, System.Drawing.Graphics g, Color c, bool vertical, bool direction)
         {
             g.FillRectangle(this.BrushFromColor(c, vertical, direction, b.Width, b.Height), new Rectangle(0, 0, b.Width, b.Height));
         }

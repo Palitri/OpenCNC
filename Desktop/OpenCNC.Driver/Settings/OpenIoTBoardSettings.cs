@@ -17,6 +17,9 @@ namespace Palitri.OpenCNC.Driver.Settings
             public int PeripheralId { get; set; }
             public int StepsPerUnit { get; set; }
 
+            public int PropertyIdSpeed { get; set; }
+            public int PropertyIdTurn { get; set; }
+
             [JsonConverter(typeof(StringToBytesConverter))]
             public byte[] EnableBitmask { get; set; }
 
@@ -70,6 +73,15 @@ namespace Palitri.OpenCNC.Driver.Settings
 
         [JsonConverter(typeof(StringToBytesConverter))]
         public byte[] ToolEnableValueOff { get; set; }
+
+        [JsonConverter(typeof(StringToBytesConverter))]
+        public byte[] RelayBitmask { get; set; }
+
+        [JsonConverter(typeof(StringToBytesConverter))]
+        public byte[] RelayValueOn { get; set; }
+
+        [JsonConverter(typeof(StringToBytesConverter))]
+        public byte[] RelayValueOff { get; set; }
 
         public List<AsyncChannelSetting> AxesSettings { get; set; }
 

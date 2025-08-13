@@ -8,6 +8,8 @@
 	"ToolEnableValueOff":	"00000000",
 	"AxesSettings": [
 		{
+			"PropertyIdSpeed": 8,
+			"PropertyIdTurn": 9,
 			"Spacial": true,
 			"PeripheralId":5,
 			"StepsPerUnit":25,
@@ -25,6 +27,8 @@
 			"StepModeValueSixteenth":	"01110000"
 		},
 		{
+			"PropertyIdSpeed": 1,
+			"PropertyIdTurn": 2,
 			"PeripheralId":0,
 			"StepsPerUnit":25,
 			"EnableBitmask":			"10000000 00000000",
@@ -41,6 +45,8 @@
 			"StepModeValueSixteenth":	"01110000 00000000"
 		},
 		{
+			"PropertyIdSpeed": 18,
+			"PropertyIdTurn": 19,
 			"PeripheralId":7,
 			"StepsPerUnit":25,
 			"EnableBitmask":			"10000000 00000000 00000000",
@@ -57,6 +63,8 @@
 			"StepModeValueSixteenth":	"01110000 00000000 00000000"
 		},
 		{
+			"PropertyIdSpeed": 13,
+			"PropertyIdTurn": 14,
 			"PeripheralId":6,
 			"StepsPerUnit":25,
 			"EnableBitmask":			"10000000 00000000 00000000 00000000",

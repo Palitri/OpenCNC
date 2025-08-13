@@ -18,6 +18,7 @@ namespace Palitri.OpenCNC.Driver
     public class CNCOpenIoTDevice : ICNC
     {
         // OpenIOT
+        const int CommandCode_SetPropertiesValues = 0x23;
         const int CommandCode_SendCommand = 0x48;
 
         // Asynch peripheral
@@ -104,12 +105,7 @@ namespace Palitri.OpenCNC.Driver
             this.commandWriter.EndCommand();
 
             for (int i = 0; i < this.boardSettings.AxesSettings.Count; i++)
-            {
-                this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_SetChannelDevice);
-                this.commandWriter.WriteUInt8((byte)i);
-                this.commandWriter.WriteUInt8((byte)this.boardSettings.AxesSettings[i].PeripheralId);
-                this.commandWriter.EndCommand();
-            }
+                this.MapDevice(i, this.boardSettings.AxesSettings[i].PeripheralId);
 
             this.commandWriter.BeginCommand(this.boardSettings.CNCPeripheralID, CommandCode_SetAsyncDevice);
             this.commandWriter.WriteUInt8((byte)this.boardSettings.AsyncDriverPeripheralID);
@@ -191,29 +187,56 @@ namespace Palitri.OpenCNC.Driver
             this.idleEvent.WaitOne();
         }
 
+        public void MapDevice(int channel, int peripheralId)
+        {
+            this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_SetChannelDevice);
+            this.commandWriter.WriteUInt8((byte)channel);
+            this.commandWriter.WriteUInt8((byte)peripheralId);
+            this.commandWriter.EndCommand();
+        }
+
+        public void SetDriveVector(int channel, float driveVector)
+        {
+            this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_SetVector);
+            this.commandWriter.WriteUInt8((byte)channel);
+            this.commandWriter.WriteFloat32(driveVector);
+            this.commandWriter.EndCommand();
+        }
+
         public void Drive(float time)
         {
+            this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_Drive);
+            this.commandWriter.WriteFloat32(time);
+            this.commandWriter.EndCommand();
         }
 
         public void DriveLinear(float origin, float vector)
         {
+            //Remove
         }
 
         public void DriveSine(float offset, float span, float amplitude, float phaseStart, float phaseEnd)
         {
+            //Remove?
         }
 
-        public void IssueMotorTurning(int motor, float speed)
+        public void SetPropertyValue(int property, float value)
         {
-        }
+            byte[] valueBytes = BitConverter.GetBytes(value);
 
-        public void MapDevice()
-        {
+            byte[] data = new byte[6];
+            data[0] = 1;
+            data[1] = (byte)property;
+            Array.Copy(valueBytes, 0, data, 2, 4);
+            this.board.SendCommand(CommandCode_SetPropertiesValues, data);
         }
-
-        public bool RequestInfo()
+        public void SetPropertyValue(int property, bool value)
         {
-            return true;
+            byte[] data = new byte[3];
+            data[0] = 1;
+            data[1] = (byte)property;
+            data[2] = (byte)(value ? 1 : 0);
+            this.board.SendCommand(CommandCode_SetPropertiesValues, data);
         }
 
         public void SetMotorsPowerMode(bool powerOn)
@@ -274,22 +297,23 @@ namespace Palitri.OpenCNC.Driver
             this.WriteCommandSetBits();
         }
 
-        public void Tone(int motors, float frequency, float duration)
+        public void SetRelay(int relayIndex, bool enable)
         {
-            const byte channel = 0;
+            BitUtils.SetBits(this.configurationBits, this.boardSettings.RelayBitmask, enable ? this.boardSettings.RelayValueOn: this.boardSettings.RelayValueOff);
 
-            this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_SetVector);
-            this.commandWriter.WriteUInt8(channel);
-            this.commandWriter.WriteFloat32(frequency * duration);
-            this.commandWriter.EndCommand();
-
-            this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_Drive);
-            this.commandWriter.WriteFloat32(duration);
-            this.commandWriter.EndCommand();
+            this.WriteCommandSetBits();
         }
 
-        public void Turn(int motors, CNCRotationDirection direction, int interval, int steps)
+        public void Tone(int[] channels, float frequency, float duration)
         {
+            // Kinda. Think about repeat/oscillate command. Or simply tone command. Or playing by rotating back and forth, channel after channel - better spectacle
+            float vector = frequency * duration;
+            foreach (int channel in channels)
+            {
+                this.SetDriveVector(channel, vector);
+            }
+
+            this.Drive(duration);
         }
 
         public void Wait(float time)

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OpenCNC.App {
+namespace Palitri.OpenCNC.App {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace OpenCNC.App {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpenCNC.App.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Palitri.OpenCNC.App.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -255,6 +255,46 @@ namespace OpenCNC.App {
         internal static System.Drawing.Bitmap btn_axis_z_pos_small {
             get {
                 object obj = ResourceManager.GetObject("btn_axis_z_pos_small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap btn_manual_any {
+            get {
+                object obj = ResourceManager.GetObject("btn_manual_any", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap btn_manual_x {
+            get {
+                object obj = ResourceManager.GetObject("btn_manual_x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap btn_manual_y {
+            get {
+                object obj = ResourceManager.GetObject("btn_manual_y", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap btn_manual_z {
+            get {
+                object obj = ResourceManager.GetObject("btn_manual_z", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace OpenCNC.App.Common
+namespace Palitri.OpenCNC.App.Common
 {
     public static class WinAPI
     {
