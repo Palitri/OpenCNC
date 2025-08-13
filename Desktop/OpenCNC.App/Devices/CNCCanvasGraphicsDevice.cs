@@ -1,13 +1,13 @@
-﻿using Palitri.Graphics;
-using Palitri.Graphics.Devices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Palitri.Graphics;
+using Palitri.Graphics.Devices;
 
-namespace OpenCNC.App.Devices
+namespace Palitri.OpenCNC.App.Devices
 {
     public class CNCCanvasGraphicsDevice : CanvasGraphicsDevice
     {
@@ -17,7 +17,7 @@ namespace OpenCNC.App.Devices
         private int renderPrimitiveIndex, highlightPrimitiveIndex;
         private bool isHighlighted;
 
-        public CNCCanvasGraphicsDevice(Graphics canvasGraphics)
+        public CNCCanvasGraphicsDevice(System.Drawing.Graphics canvasGraphics)
             : base(canvasGraphics, new Pen(Color.Blue))
         {
             this.defaultPen = new Pen(Color.Blue);

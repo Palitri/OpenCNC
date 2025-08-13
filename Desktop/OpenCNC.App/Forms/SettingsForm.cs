@@ -1,6 +1,6 @@
-﻿using OpenCNC.App.Settings;
+﻿using Palitri.OpenCNC.App.Settings;
 
-namespace OpenCNC.App
+namespace Palitri.OpenCNC.App
 {
     public partial class SettingsForm : Form
     {

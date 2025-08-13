@@ -6,17 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCNC.App.Devices
+namespace Palitri.OpenCNC.App.Devices
 {
     public class CNCAudioDevice : IAudioDevice
     {
         private ICNC cnc;
-        private int motors;
+        private int[] channels;
 
-        public CNCAudioDevice(ICNC cnc, int motors)
+        public CNCAudioDevice(ICNC cnc, int[] channels)
         {
             this.cnc = cnc;
-            this.motors = motors;
+            this.channels = channels;
         }
 
         public void SynthesizeBegin()
@@ -34,7 +34,7 @@ namespace OpenCNC.App.Devices
 
         public void Synthesize(float frequency, float duration)
         {
-            this.cnc.Tone(this.motors, frequency, duration);
+            this.cnc.Tone(this.channels, frequency, duration);
         }
 
         public void Silence(float duration)

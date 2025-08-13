@@ -17,7 +17,7 @@ namespace Palitri.OpenCNC.Script.Commands
         public CNCScriptCommandMapDevice()
         {
             this.Name = "MapDevice";
-            this.Parameters = new List<string>() { "Device" };
+            this.Parameters = new List<string>() { "Channel", "PeripheralId" };
             this.InfiniteParameters = false;
         }
         
@@ -35,13 +35,14 @@ namespace Palitri.OpenCNC.Script.Commands
             if (result.ResultType == CNCScriptCommandResultType.Error)
                 return result;
 
-            //CNCDevice device;
-            //string message;
-            //if (!CNCScriptUtils.TryParse<CNCDevice>(parameters[1], out device, out message))
-            //    return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
+            string message;
+            if (!ScriptUtils.TryParse<int>(parameters[1], out int channel, out message))
+                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
+            if (!ScriptUtils.TryParse<int>(parameters[1], out int peripheralId, out message))
+                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
 
-            //if (cnc != null)
-            //    cnc.MapDevice(device);
+            if (cnc != null)
+                cnc.MapDevice(channel, peripheralId);
 
             return result;
         }

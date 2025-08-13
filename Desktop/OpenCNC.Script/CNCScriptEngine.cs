@@ -31,10 +31,10 @@ namespace Palitri.OpenCNC.Script
                 new CNCScriptCommandMapDevice(),
                 new CNCScriptCommandSetPower(),
                 new CNCScriptCommandSetSpeed(),
+                new CNCScriptCommandSetRelay(),
+                new CNCScriptCommandSetDriveVector(),
                 new CNCScriptCommandTone(),
-                new CNCScriptCommandTurn(),
                 new CNCScriptCommandWait(),
-                new CNCScriptCommandIssueMotorTurning(),
                 new CNCScriptCommandDrive(),
                 new CNCScriptCommandDriveLinear(),
                 new CNCScriptCommandDriveSine()

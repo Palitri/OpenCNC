@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCNC.App
+namespace Palitri.OpenCNC.App
 {
     public enum CNCLengthUnitType
     {

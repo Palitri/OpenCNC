@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Palitri.OpenCNC.Script.Commands
 {
-    public class CNCScriptCommandIssueMotorTurning : ICNCScriptCommand
+    public class CNCScriptCommandSetDriveVector : ICNCScriptCommand
     {
         public string Name { get; private set; }
         public List<string> Parameters { get; private set; }
         public bool InfiniteParameters { get; private set; }
 
-        public CNCScriptCommandIssueMotorTurning()
+        public CNCScriptCommandSetDriveVector()
         {
-            this.Name = "IssueMotorTurning";
-            this.Parameters = new List<string>() { "Motor", "Speed" };
+            this.Name = "SetDriveVector";
+            this.Parameters = new List<string>() { "Channel", "Vector" };
             this.InfiniteParameters = false;
         }
         
@@ -35,16 +35,14 @@ namespace Palitri.OpenCNC.Script.Commands
             if (result.ResultType == CNCScriptCommandResultType.Error)
                 return result;
 
-            int motor;
-            float speed;
             string message;
-            if (!ScriptUtils.TryParse<int>(parameters[1], out motor, out message))
+            if (!ScriptUtils.TryParse<int>(parameters[1], out int channel, out message))
                 return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-            if (!ScriptUtils.TryParse<float>(parameters[2], out speed, out message))
+            if (!ScriptUtils.TryParse<float>(parameters[2], out float vector, out message))
                 return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
 
             if (cnc != null)
-                cnc.IssueMotorTurning(motor, speed);
+                cnc.SetDriveVector(channel, vector);
 
             return result;
         }

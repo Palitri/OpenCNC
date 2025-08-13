@@ -1,4 +1,4 @@
-﻿using OpenCNC.App.Rendering;
+﻿using Palitri.OpenCNC.App.Rendering;
 using Palitri.OpenCNC.Script;
 using Palitri.OpenCNC.Driver;
 using System;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace OpenCNC.App
+namespace Palitri.OpenCNC.App
 {
     public partial class ConsoleForm : Form
     {

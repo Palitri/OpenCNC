@@ -1,6 +1,6 @@
-using OpenCNC.App.Devices;
-using OpenCNC.App.Rendering;
-using OpenCNC.App.Settings;
+using Palitri.OpenCNC.App.Devices;
+using Palitri.OpenCNC.App.Rendering;
+using Palitri.OpenCNC.App.Settings;
 using Palitri.AudioSynthesis;
 using Palitri.Graphics;
 using Palitri.Graphics.Devices;
@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
 
-namespace OpenCNC.App
+namespace Palitri.OpenCNC.App
 {
     // TODO:
     // - check laser power pwm
@@ -114,7 +114,6 @@ namespace OpenCNC.App
         {
             this.board.transmissionChannel = new ComTransmissionChannel(args.Info.Port);
             this.board.Open();
-            //this.board.RequestBoardInfo();
 
             this.cnc = new CNCOpenIoTDevice(this.board, this.boardSettings);
 
@@ -277,7 +276,7 @@ namespace OpenCNC.App
                     //new Note(Tone.F, 4, 1.25f),
                 };
 
-                new AudioSynthesizer(new CNCAudioDevice(this.cnc, 7)) { Tempo = 360.0f }.Play(initMelody);
+                new AudioSynthesizer(new CNCAudioDevice(this.cnc, [0])) { Tempo = 360.0f }.Play(initMelody);
             }
         }
 
@@ -604,12 +603,13 @@ namespace OpenCNC.App
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.board.RequestAllDeviceProperties();
+            //this.board.RequestBoardInfo();
             //MessageBox.Show(this.cnc.Info, "Device info");
         }
 
         private void manualConrolsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ManualControlsForm controlsForm = new ManualControlsForm(this.cnc, this.appSettings);
+            ManualControlsForm controlsForm = new ManualControlsForm(this.cnc, this.appSettings, this.boardSettings);
             controlsForm.ShowDialog();
         }
 

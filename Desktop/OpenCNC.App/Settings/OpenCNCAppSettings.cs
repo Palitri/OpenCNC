@@ -1,4 +1,4 @@
-﻿using OpenCNC.App.Common;
+﻿using Palitri.OpenCNC.App.Common;
 using OrderedPropertyGrid;
 using Palitri.OpenCNC.Driver;
 using System;
@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OpenCNC.App.Settings
+namespace Palitri.OpenCNC.App.Settings
 {
     [TypeConverter(typeof(PropertySorter))]
     public class OpenCNCAppSettings

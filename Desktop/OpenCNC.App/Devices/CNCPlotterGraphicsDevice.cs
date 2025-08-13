@@ -1,4 +1,4 @@
-﻿using OpenCNC.App.Settings;
+﻿using Palitri.OpenCNC.App.Settings;
 using Palitri.Graphics;
 using Palitri.Graphics.Curves;
 using Palitri.OpenCNC.Driver;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenCNC.App
+namespace Palitri.OpenCNC.App
 {
     public delegate void OnRenderPrimitiveDelegate(object sender, CNCPlotterGraphicsDeviceRenderPrimitiveEventArgs e);
 

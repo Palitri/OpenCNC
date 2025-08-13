@@ -17,7 +17,7 @@ namespace Palitri.OpenCNC.Script.Commands
         public CNCScriptCommandTone()
         {
             this.Name = "Tone";
-            this.Parameters = new List<string>() { "Motors", "Frequency", "Duration" };
+            this.Parameters = new List<string>() { "Channel", "Frequency", "Duration" };
             this.InfiniteParameters = false;
         }
         
@@ -35,18 +35,16 @@ namespace Palitri.OpenCNC.Script.Commands
             if (result.ResultType == CNCScriptCommandResultType.Error)
                 return result;
 
-            int motors;
-            float frequency, duration;
             string message;
-            if (!ScriptUtils.TryParse<int>(parameters[1], out motors, out message))
+            if (!ScriptUtils.TryParse<int>(parameters[1], out int channel, out message))
                 return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-            if (!ScriptUtils.TryParse<float>(parameters[2], out frequency, out message))
+            if (!ScriptUtils.TryParse<float>(parameters[2], out float frequency, out message))
                 return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-            if (!ScriptUtils.TryParse<float>(parameters[3], out duration, out message))
+            if (!ScriptUtils.TryParse<float>(parameters[3], out float duration, out message))
                 return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
 
             if (cnc != null)
-                cnc.Tone(motors, frequency, duration);
+                cnc.Tone([channel], frequency, duration);
 
             return result;
         }

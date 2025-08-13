@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace OpenCNC.App
+namespace Palitri.OpenCNC.App
 {
     internal static class Program
     {

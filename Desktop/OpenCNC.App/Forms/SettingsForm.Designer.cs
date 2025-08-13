@@ -1,4 +1,4 @@
-﻿namespace OpenCNC.App
+﻿namespace Palitri.OpenCNC.App
 {
     partial class SettingsForm
     {
