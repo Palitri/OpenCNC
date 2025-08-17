@@ -206,6 +206,7 @@ namespace Palitri.OpenCNC.App
             this.cnc.Begin();
             this.cnc.SetMotorsSleepMode(false);
             this.cnc.SetToolPowerMode(true);
+            this.cnc.SetPower(this.appSettings.IdlePower);
             this.cnc.SetMotorsPowerMode(false);
             this.cnc.SetMotorsStepMode(0, this.appSettings.StepMode);
             this.cnc.SetSpeed(this.appSettings.MoveSpeed);

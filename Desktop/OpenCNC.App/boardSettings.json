@@ -61,24 +61,6 @@
 			"StepModeValueQuarter":		"00100000 00000000 00000000",
 			"StepModeValueEighth":		"01100000 00000000 00000000",
 			"StepModeValueSixteenth":	"01110000 00000000 00000000"
-		},
-		{
-			"PropertyIdSpeed": 13,
-			"PropertyIdTurn": 14,
-			"PeripheralId":6,
-			"StepsPerUnit":25,
-			"EnableBitmask":			"10000000 00000000 00000000 00000000",
-			"EnableValueOn":			"00000000 00000000 00000000 00000000",
-			"EnableValueOff":			"10000000 00000000 00000000 00000000",
-			"SleepBitmask":				"00000100 00000000 00000000 00000000",
-			"SleepValueOn":				"00000000 00000000 00000000 00000000",
-			"SleepValueOff":			"00000100 00000000 00000000 00000000",
-			"StepModeBitmask":			"01110000 00000000 00000000 00000000",
-			"StepModeValueFull":		"00000000 00000000 00000000 00000000",
-			"StepModeValueHalf":		"01000000 00000000 00000000 00000000",
-			"StepModeValueQuarter":		"00100000 00000000 00000000 00000000",
-			"StepModeValueEighth":		"01100000 00000000 00000000 00000000",
-			"StepModeValueSixteenth":	"01110000 00000000 00000000 00000000"
 		}
 	]
 }

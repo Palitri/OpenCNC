@@ -52,10 +52,9 @@
             panel1.Controls.Add(thumbwheelY);
             panel1.Controls.Add(thumbwheelX);
             panel1.Controls.Add(pictureBox1);
-            panel1.Location = new Point(6, 0);
-            panel1.Margin = new Padding(6, 7, 6, 7);
+            panel1.Location = new Point(3, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(800, 800);
+            panel1.Size = new Size(431, 375);
             panel1.TabIndex = 7;
             // 
             // comboArbitraryAxis
@@ -63,19 +62,21 @@
             comboArbitraryAxis.DropDownStyle = ComboBoxStyle.DropDownList;
             comboArbitraryAxis.Font = new Font("Segoe UI", 19.875F, FontStyle.Regular, GraphicsUnit.Point, 204);
             comboArbitraryAxis.FormattingEnabled = true;
-            comboArbitraryAxis.Location = new Point(423, 31);
+            comboArbitraryAxis.Location = new Point(228, 15);
+            comboArbitraryAxis.Margin = new Padding(2, 1, 2, 1);
             comboArbitraryAxis.Name = "comboArbitraryAxis";
-            comboArbitraryAxis.Size = new Size(100, 79);
+            comboArbitraryAxis.Size = new Size(56, 44);
             comboArbitraryAxis.TabIndex = 18;
             comboArbitraryAxis.TextChanged += comboArbitraryAxis_TextChanged;
             // 
             // thumbwheelArbitrary
             // 
             thumbwheelArbitrary.BackgroundImage = Resources.btn_manual_any;
-            thumbwheelArbitrary.BackgroundImageLayout = ImageLayout.Center;
-            thumbwheelArbitrary.Location = new Point(529, 12);
+            thumbwheelArbitrary.BackgroundImageLayout = ImageLayout.Zoom;
+            thumbwheelArbitrary.Location = new Point(285, 6);
+            thumbwheelArbitrary.Margin = new Padding(2, 1, 2, 1);
             thumbwheelArbitrary.Name = "thumbwheelArbitrary";
-            thumbwheelArbitrary.Size = new Size(263, 113);
+            thumbwheelArbitrary.Size = new Size(142, 53);
             thumbwheelArbitrary.TabIndex = 17;
             thumbwheelArbitrary.TabStop = false;
             thumbwheelArbitrary.Tag = "0";
@@ -88,10 +89,11 @@
             // thumbwheelZ
             // 
             thumbwheelZ.BackgroundImage = Resources.btn_manual_z;
-            thumbwheelZ.BackgroundImageLayout = ImageLayout.Center;
-            thumbwheelZ.Location = new Point(290, 169);
+            thumbwheelZ.BackgroundImageLayout = ImageLayout.Zoom;
+            thumbwheelZ.Location = new Point(156, 79);
+            thumbwheelZ.Margin = new Padding(2, 1, 2, 1);
             thumbwheelZ.Name = "thumbwheelZ";
-            thumbwheelZ.Size = new Size(117, 261);
+            thumbwheelZ.Size = new Size(63, 122);
             thumbwheelZ.TabIndex = 16;
             thumbwheelZ.TabStop = false;
             thumbwheelZ.Tag = "2";
@@ -104,10 +106,11 @@
             // thumbwheelY
             // 
             thumbwheelY.BackgroundImage = Resources.btn_manual_y;
-            thumbwheelY.BackgroundImageLayout = ImageLayout.Center;
-            thumbwheelY.Location = new Point(23, 374);
+            thumbwheelY.BackgroundImageLayout = ImageLayout.Zoom;
+            thumbwheelY.Location = new Point(12, 175);
+            thumbwheelY.Margin = new Padding(2, 1, 2, 1);
             thumbwheelY.Name = "thumbwheelY";
-            thumbwheelY.Size = new Size(116, 262);
+            thumbwheelY.Size = new Size(62, 123);
             thumbwheelY.TabIndex = 15;
             thumbwheelY.TabStop = false;
             thumbwheelY.Tag = "1";
@@ -120,10 +123,11 @@
             // thumbwheelX
             // 
             thumbwheelX.BackgroundImage = Resources.btn_manual_x;
-            thumbwheelX.BackgroundImageLayout = ImageLayout.Center;
-            thumbwheelX.Location = new Point(352, 572);
+            thumbwheelX.BackgroundImageLayout = ImageLayout.Zoom;
+            thumbwheelX.Location = new Point(190, 268);
+            thumbwheelX.Margin = new Padding(2, 1, 2, 1);
             thumbwheelX.Name = "thumbwheelX";
-            thumbwheelX.Size = new Size(263, 113);
+            thumbwheelX.Size = new Size(142, 53);
             thumbwheelX.TabIndex = 13;
             thumbwheelX.TabStop = false;
             thumbwheelX.Tag = "0";
@@ -138,21 +142,19 @@
             pictureBox1.BackgroundImage = Resources.axes3d;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.Location = new Point(1, 0);
-            pictureBox1.Margin = new Padding(6, 7, 6, 7);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(800, 800);
+            pictureBox1.Size = new Size(431, 375);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // ManualControlsForm
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(810, 805);
+            ClientSize = new Size(436, 377);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(6, 7, 6, 7);
             Name = "ManualControlsForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Manual Controls";

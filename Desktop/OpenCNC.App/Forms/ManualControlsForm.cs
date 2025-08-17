@@ -39,7 +39,8 @@ namespace Palitri.OpenCNC.App
             this.comboArbitraryAxis.Items.Clear();
             for (int i = 3; i < this.boardSettings.AxesSettings.Count; i++)
                 this.comboArbitraryAxis.Items.Add(i.ToString());
-            this.comboArbitraryAxis.SelectedIndex = 0;
+            if (this.comboArbitraryAxis.Items.Count > 0)
+                this.comboArbitraryAxis.SelectedIndex = 0;
         }
 
         private void thumbwheelAxis_ValueChanged(object sender, EventArgs e)
