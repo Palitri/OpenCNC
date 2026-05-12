@@ -10,9 +10,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Palitri.OpenCNC.Driver.Settings
 {
-    public class OpenIoTBoardSettings
+    public class OpenIoTBoardConfiguration
     {
-        public class AsyncChannelSetting
+        public class AsyncChannelConfiguration
         {
             public int PeripheralId { get; set; }
             public int StepsPerUnit { get; set; }
@@ -20,75 +20,76 @@ namespace Palitri.OpenCNC.Driver.Settings
             public int PropertyIdSpeed { get; set; }
             public int PropertyIdTurn { get; set; }
 
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] EnableBitmask { get; set; }
+            public SwitchConfiguration? Enable { get; set; }
 
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] EnableValueOn { get; set; }
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] EnableValueOff { get; set; }
+            public SwitchConfiguration? Sleep { get; set; }
 
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] SleepBitmask { get; set; }
-
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] SleepValueOn { get; set; }
-
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] SleepValueOff { get; set; }
-
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] SleepValue { get; set; }
-
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] StepModeBitmask { get; set; }
-
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] StepModeValueFull { get; set; }
-
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] StepModeValueHalf { get; set; }
-
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] StepModeValueQuarter { get; set; }
-
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] StepModeValueEighth { get; set; }
-
-            [JsonConverter(typeof(StringToBytesConverter))]
-            public byte[] StepModeValueSixteenth { get; set; }
+            public StepModeConfiguration? StepMode { get; set; }
         }
 
+        public class SwitchConfiguration
+        {
+            [JsonConverter(typeof(StringToBytesConverter))]
+            public byte[] Bitmask { get; set; }
+
+            [JsonConverter(typeof(StringToBytesConverter))]
+            public byte[] On { get; set; }
+
+            [JsonConverter(typeof(StringToBytesConverter))]
+            public byte[] Off { get; set; }
+        }
+
+        public class StepModeConfiguration
+        {
+            [JsonConverter(typeof(StringToBytesConverter))]
+            public byte[] Bitmask { get; set; }
+
+            [JsonConverter(typeof(StringToBytesConverter))]
+            public byte[] Full { get; set; }
+
+            [JsonConverter(typeof(StringToBytesConverter))]
+            public byte[] Half { get; set; }
+
+            [JsonConverter(typeof(StringToBytesConverter))]
+            public byte[] Quarter { get; set; }
+
+            [JsonConverter(typeof(StringToBytesConverter))]
+            public byte[] Eighth { get; set; }
+
+            [JsonConverter(typeof(StringToBytesConverter))]
+            public byte[] Sixteenth { get; set; }
+        }
 
         public int AsyncDriverPeripheralID { get; set; }
         public int CNCPeripheralID { get; set; }
         public int ToolPeripheralID { get; set; }
         public int ShiftRegPeripheralID { get; set; }
+        public int ControlBitsCount { get; set; }
 
-        [JsonConverter(typeof(StringToBytesConverter))]
-        public byte[] ToolEnableBitmask { get; set; }
+        public SwitchConfiguration ToolEnable { get; set; }
 
-        [JsonConverter(typeof(StringToBytesConverter))]
-        public byte[] ToolEnableValueOn { get; set; }
+        public List<AsyncChannelConfiguration> Axes { get; set; }
 
-        [JsonConverter(typeof(StringToBytesConverter))]
-        public byte[] ToolEnableValueOff { get; set; }
-
-        [JsonConverter(typeof(StringToBytesConverter))]
-        public byte[] RelayBitmask { get; set; }
-
-        [JsonConverter(typeof(StringToBytesConverter))]
-        public byte[] RelayValueOn { get; set; }
-
-        [JsonConverter(typeof(StringToBytesConverter))]
-        public byte[] RelayValueOff { get; set; }
-
-        public List<AsyncChannelSetting> AxesSettings { get; set; }
-
-        public static OpenIoTBoardSettings LoadSettings(string fileName)
+        public List<SwitchConfiguration> SwitchesSettings { get; set; }
+        public static OpenIoTBoardConfiguration LoadJSON(string fileName)
         {
             string jsonContent = File.ReadAllText(fileName);
-            return JsonSerializer.Deserialize<OpenIoTBoardSettings>(jsonContent);
+            return JsonSerializer.Deserialize<OpenIoTBoardConfiguration>(jsonContent);
+        }
+
+        
+        public string ToJson()
+        {
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+            };
+
+            return JsonSerializer.Serialize(this, options);
+        }
+
+        public void SaveToJson(string fileName)
+        {
+            File.WriteAllText(fileName, this.ToJson());
         }
     }
 

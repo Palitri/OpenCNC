@@ -23,6 +23,7 @@ namespace Palitri.OpenCNC.App.Devices
         {
             this.cnc.Begin();
             this.cnc.SetMotorsPowerMode(true);
+            this.cnc.ResetDriveVectors();
         }
 
         public void SynthesizeEnd()

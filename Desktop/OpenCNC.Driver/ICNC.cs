@@ -26,9 +26,8 @@ namespace Palitri.OpenCNC.Driver
         public void SetPropertyValue(int property, bool value);
         void MapDevice(int channel, int peripheralId);
         void SetDriveVector(int channel, float driveVector);
+        void ResetDriveVectors();
         void Drive(float time);
-        void DriveLinear(float origin, float vector);
-        void DriveSine(float offset, float span, float amplitude, float phaseStart, float phaseEnd);
         void SetRelay(int relayIndex, bool enabled);
 
         void SetPower(float power);

@@ -1,5 +1,4 @@
-﻿using CNCScript.Commands;
-using Palitri.OpenCNC.Driver;
+﻿using Palitri.OpenCNC.Driver;
 using Palitri.OpenCNC.Script.Commands;
 using System;
 using System.Collections.Generic;
@@ -36,8 +35,6 @@ namespace Palitri.OpenCNC.Script
                 new CNCScriptCommandTone(),
                 new CNCScriptCommandWait(),
                 new CNCScriptCommandDrive(),
-                new CNCScriptCommandDriveLinear(),
-                new CNCScriptCommandDriveSine()
             };
         }
 

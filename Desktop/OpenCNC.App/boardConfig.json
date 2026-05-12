@@ -1,0 +1,96 @@
+{
+	"AsyncDriverPeripheralID": 1,
+	"CNCPeripheralID": 2,
+	"ToolPeripheralID": 3,
+	"ShiftRegPeripheralID":4,
+	"ControlBitsCount": 32,
+	"ToolEnable": {
+		"Bitmask":	"00000001",
+		"On":		"00000001",
+		"Off":		"00000000"
+	},
+	"Axes": [
+		{
+			"Spacial": true,
+			"PropertyIdSpeed": 8,
+			"PropertyIdTurn": 9,
+			"PeripheralId":5,
+			"StepsPerUnit":25,
+			"Enable": {
+				"Bitmask":		"10000000",
+				"On":			"00000000",
+				"Off":			"10000000"
+			},
+			"Sleep": {
+				"Bitmask":		"00000100",
+				"On":			"00000000",
+				"Off":			"00000100"
+			},
+			"StepMode": {
+				"Bitmask":		"01110000",
+				"Full":			"00000000",
+				"Half":			"01000000",
+				"Quarter":		"00100000",
+				"Eighth":		"01100000",
+				"Sixteenth":	"01110000"
+			}
+		},
+		{
+			"Spacial": true,
+			"PropertyIdSpeed": 1,
+			"PropertyIdTurn": 2,
+			"PeripheralId":0,
+			"StepsPerUnit":25,
+			"Enable": {
+				"Bitmask":		"10000000 00000000",
+				"On":			"00000000 00000000",
+				"Off":			"10000000 00000000"
+			},
+			"Sleep": {
+				"Bitmask":		"00000100 00000000",
+				"On":			"00000000 00000000",
+				"Off":			"00000100 00000000"
+			},
+			"StepMode": {
+				"Bitmask":		"01110000 00000000",
+				"Full":			"00000000 00000000",
+				"Half":			"01000000 00000000",
+				"Quarter":		"00100000 00000000",
+				"Eighth":		"01100000 00000000",
+				"Sixteenth":	"01110000 00000000"
+			}
+		},
+		{
+			"Spacial": true,
+			"PropertyIdSpeed": 18,
+			"PropertyIdTurn": 19,
+			"PeripheralId":7,
+			"StepsPerUnit":25,
+			"Enable": {
+				"Bitmask":		"10000000 00000000 00000000",
+				"On":			"00000000 00000000 00000000",
+				"Off":			"10000000 00000000 00000000"
+			},
+			"Sleep": {
+				"Bitmask":		"00000100 00000000 00000000",
+				"On":			"00000000 00000000 00000000",
+				"Off":			"00000100 00000000 00000000"
+			},
+			"StepMode": {
+				"Bitmask":		"01110000 00000000 00000000",
+				"Full":			"00000000 00000000 00000000",
+				"Half":			"01000000 00000000 00000000",
+				"Quarter":		"00100000 00000000 00000000",
+				"Eighth":		"01100000 00000000 00000000",
+				"Sixteenth":	"01110000 00000000 00000000"
+			}
+		}
+	],
+	"SwitchesSettings": [
+		{
+			"Bitmask":	"00000001 00000000 00000000 00000000",
+			"On":		"00000001 00000000 00000000 00000000",
+			"Off":		"00000000 00000000 00000000 00000000"
+		}
+	]
+}

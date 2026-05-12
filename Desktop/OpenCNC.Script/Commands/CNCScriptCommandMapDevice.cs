@@ -38,7 +38,7 @@ namespace Palitri.OpenCNC.Script.Commands
             string message;
             if (!ScriptUtils.TryParse<int>(parameters[1], out int channel, out message))
                 return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-            if (!ScriptUtils.TryParse<int>(parameters[1], out int peripheralId, out message))
+            if (!ScriptUtils.TryParse<int>(parameters[2], out int peripheralId, out message))
                 return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
 
             if (cnc != null)

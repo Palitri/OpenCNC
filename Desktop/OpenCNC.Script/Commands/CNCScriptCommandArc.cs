@@ -67,7 +67,7 @@ namespace Palitri.OpenCNC.Script.Commands
             paramIndex++;
 
             if (cnc != null)
-                cnc.Arc(semiMajor, semiMinor, (float)Math.PI * startAngle / 180.0f, (float)Math.PI * endAngle / 180.0f);
+                cnc.Arc(semiMajor, semiMinor, (float)Math.PI * 2.0f * startAngle, (float)Math.PI * 2.0f * endAngle);
 
             return result;
         }
@@ -79,8 +79,8 @@ namespace Palitri.OpenCNC.Script.Commands
                 result.Add("X" + DimensionUtils.GetName(d).ToLower());
             for (int d = 0; d < dimensions; d++)
                 result.Add("Y" + DimensionUtils.GetName(d).ToLower());
-            result.Add("StartAngle");
-            result.Add("EndAngle");
+            result.Add("TurnsStartAngle");
+            result.Add("TurnsEndAngle");
 
             return result;
         }
