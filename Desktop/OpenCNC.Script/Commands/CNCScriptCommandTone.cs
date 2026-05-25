@@ -1,52 +1,24 @@
-﻿using Palitri.OpenCNC.Script.Utils;
-using Palitri.OpenCNC.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Palitri.OpenCNC.Driver;
 
 namespace Palitri.OpenCNC.Script.Commands
 {
-    public class CNCScriptCommandTone : ICNCScriptCommand
+    public class CNCScriptCommandTone : CNCScriptCommandBase
     {
-        public string Name { get; private set; }
-        public List<string> Parameters { get; private set; }
-        public bool InfiniteParameters { get; private set; }
-
         public CNCScriptCommandTone()
         {
             this.Name = "Tone";
-            this.Parameters = new List<string>() { "Channel", "Frequency", "Duration" };
             this.InfiniteParameters = false;
+            this.Params = new List<CNCScriptCommandParameter>()
+            {
+                new CNCScriptCommandParameter("Axis", typeof(int)),
+                new CNCScriptCommandParameter("Frequency", typeof(float)),
+                new CNCScriptCommandParameter("Duration", typeof(float)),
+            };
         }
-        
-        public CNCScriptCommandResult Execute(ICNC cnc, string inputCommand)
+
+        public override void ExecuteCNCCommand(ICNC cnc, Dictionary<string, object> values)
         {
-            string[] parameters = ScriptUtils.SplitParams(inputCommand);
-
-            if (parameters.Length == 0)
-                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error);
-
-            if (!parameters[0].Equals(this.Name, StringComparison.OrdinalIgnoreCase))
-                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error);
-
-            CNCScriptCommandResult result = ScriptUtils.GetResultByParameterCount(parameters.Length - 1, this.Parameters.Count(), this.InfiniteParameters);
-            if (result.ResultType == CNCScriptCommandResultType.Error)
-                return result;
-
-            string message;
-            if (!ScriptUtils.TryParse<int>(parameters[1], out int channel, out message))
-                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-            if (!ScriptUtils.TryParse<float>(parameters[2], out float frequency, out message))
-                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-            if (!ScriptUtils.TryParse<float>(parameters[3], out float duration, out message))
-                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error, message);
-
-            if (cnc != null)
-                cnc.Tone([channel], frequency, duration);
-
-            return result;
+            cnc.Tone([(int)values["Axis"]], (float)values["Frequency"], (float)values["Duration"]);
         }
     }
 }

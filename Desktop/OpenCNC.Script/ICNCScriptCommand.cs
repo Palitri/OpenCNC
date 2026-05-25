@@ -10,7 +10,7 @@ namespace Palitri.OpenCNC.Script
     public interface ICNCScriptCommand
     {
         string Name { get; }
-        List<string> Parameters { get; }
+        public List<CNCScriptCommandParameter> Params { get; }
         bool InfiniteParameters { get; }
         CNCScriptCommandResult Execute(ICNC cnc, string inputCommand);
     }

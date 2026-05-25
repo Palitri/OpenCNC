@@ -8,5 +8,6 @@ namespace Palitri.SVG.Elements.PathElements
         internal Vector2 origin = new Vector2(0.0f, 0.0f);
         internal Vector2 pos = new Vector2(0.0f, 0.0f);
         internal Vector2 lastControlPointVector = new Vector2();
+        internal Vector4 color = new Vector4();
     }
 }

@@ -10,7 +10,7 @@ namespace Palitri.SVG.Elements.PathElements
     {
         public void Render(Matrix3 transform, IGraphicsDevice g, SVGPathRenderingParameters renderingParams)
         {
-            g.Polyline(new Vector2[] { transform.Transform(renderingParams.pos), transform.Transform(renderingParams.origin) });
+            g.Polyline(new Vector2[] { transform.Transform(renderingParams.pos), transform.Transform(renderingParams.origin) }, renderingParams.color);
 
             renderingParams.pos.x = renderingParams.origin.x;
             renderingParams.pos.y = renderingParams.origin.y;

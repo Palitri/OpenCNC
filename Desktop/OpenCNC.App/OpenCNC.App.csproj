@@ -7,9 +7,11 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Palitri.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <ApplicationIcon>icon_cnc_color.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="icon_cnc_color.ico" />
     <Content Include="Resources\led_amber_soft.png" />
     <Content Include="Resources\led_blue_soft.png" />
     <Content Include="Resources\led_green_soft.png" />
@@ -58,6 +60,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="boardConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="boardSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

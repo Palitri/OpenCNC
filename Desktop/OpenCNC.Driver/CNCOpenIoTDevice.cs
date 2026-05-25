@@ -1,45 +1,52 @@
 ﻿using OpenIoT.Lib.Tools.Protocol;
+using OpenIoT.Lib.Tools.Protocol.Commands;
 using Palitri.OpenCNC.Driver.Settings;
 using Palitri.OpenCNC.Driver.Utils;
 using Palitri.OpenIoT.Board.Api;
 using Palitri.OpenIoT.Board.Protocol.Events;
+using Palitri.OpenIoT.Tools.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Numerics;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
-using static Palitri.OpenCNC.Driver.Settings.OpenIoTBoardSettings;
+using static Palitri.OpenCNC.Driver.Settings.OpenIoTBoardConfiguration;
 
 namespace Palitri.OpenCNC.Driver
 {
     public class CNCOpenIoTDevice : ICNC
     {
-        // OpenIOT
+        // PropertyTransmissionProtocol
+        const int CommandCode_Wait = 0x12;
         const int CommandCode_SetPropertiesValues = 0x23;
-        const int CommandCode_SendCommand = 0x48;
 
-        // Asynch peripheral
-        const int CommandCode_SetNumberOfChannels = 1;
-        const int CommandCode_SetChannelDevice = 2;
-        const int CommandCode_SetChannelMapper = 3;
-        const int CommandCode_SetVector = 4;
-        const int CommandCode_Drive = 5;
+        // OpenIoTTransmissionProtocol
+        const int CommandCode_ExecutePeripheralCommand = 0x48;
+
+        // Async peripheral
+        const int CommandCode_AsyncPeripheral_SetChannelsDevices = 1;
+        const int CommandCode_AsyncPeripheral_SetChannelMapper = 3;
+        const int CommandCode_AsyncPeripheral_SetVector = 4;
+        const int CommandCode_AsyncPeripheral_Drive = 5;
 
         // CNC peripheral
-        const int CommandCode_SetAsyncDevice = 1;
-        const int CommandCode_Polyline = 11;
-        const int CommandCode_Bezier = 12;
-        const int CommandCode_Arc = 13;
-        const int CommandCode_Wait = 14;
+        const int CommandCode_CNCPeripheral_SetAsyncDevice = 1;
+        const int CommandCode_CNCPeripheral_SetAxesChannels = 2;
+        const int CommandCode_CNCPeripheral_Polyline = 11;
+        const int CommandCode_CNCPeripheral_Bezier = 12;
+        const int CommandCode_CNCPeripheral_Arc = 13;
 
         // Pin Peripheral
-        const int CommandCode_SetPWM = 1;
+        const int CommandCode_PinPeripheral_SetPWM = 1;
 
         // Shift register Peripheral
-        const int CommandCode_SetBits = 1;
+        const int CommandCode_ShiftRegPeripheral_SetBits = 1;
 
 
 
@@ -51,7 +58,7 @@ namespace Palitri.OpenCNC.Driver
 
         internal AutoResetEvent idleEvent;
 
-        private OpenIoTBoardSettings boardSettings;
+        private OpenIoTBoardConfiguration boardConfiguration;
 
         private float stepMultiplicationFactor;
 
@@ -59,7 +66,7 @@ namespace Palitri.OpenCNC.Driver
 
 
         private CNCState _state;
-        public CNCState State 
+        public CNCState State
         {
             get
             {
@@ -76,7 +83,7 @@ namespace Palitri.OpenCNC.Driver
         }
         public event StateChangedDelegate StateChanged;
 
-        public CNCOpenIoTDevice(OpenIoTBoard board, OpenIoTBoardSettings settings)
+        public CNCOpenIoTDevice(OpenIoTBoard board, OpenIoTBoardConfiguration configuration)
         {
             this.board = board;
             this.board.EventHandlers.Add(new CNCOpenIoTDeviceEventsHandler(this));
@@ -85,82 +92,102 @@ namespace Palitri.OpenCNC.Driver
 
             this.idleEvent = new AutoResetEvent(true);
 
-            this.boardSettings = settings;
+            this.boardConfiguration = configuration;
 
             this.stepMultiplicationFactor = 1.0f;
 
-            this.configurationBits = [0, 0, 0, 0];
+            int configurationBitsByteCount = (this.boardConfiguration.ControlBitsCount / 8) + ((this.boardConfiguration.ControlBitsCount % 8) == 0 ? 0 : 1);
+            this.configurationBits = new byte[configurationBitsByteCount];
 
 
             this.Begin();
             this.InitializePeripheralConfiguration();
             this.End();
             this.Execute();
+
+            // Workaround, so that script command Execute works (bacuse is calls End(), Send(), Begin())
+            //this.Begin();
         }
 
         private void InitializePeripheralConfiguration()
         {
-            this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_SetNumberOfChannels);
-            this.commandWriter.WriteUInt8((byte)this.boardSettings.AxesSettings.Count);
+            this.SetChannelsDevices(this.boardConfiguration.Axes.Select(a => (byte)a.PeripheralId).ToArray());
+
+            this.commandWriter.BeginCommand(this.boardConfiguration.CNCPeripheralID, CommandCode_CNCPeripheral_SetAsyncDevice);
+            this.commandWriter.WriteUInt8((byte)this.boardConfiguration.AsyncDriverPeripheralID);
             this.commandWriter.EndCommand();
 
-            for (int i = 0; i < this.boardSettings.AxesSettings.Count; i++)
-                this.MapDevice(i, this.boardSettings.AxesSettings[i].PeripheralId);
-
-            this.commandWriter.BeginCommand(this.boardSettings.CNCPeripheralID, CommandCode_SetAsyncDevice);
-            this.commandWriter.WriteUInt8((byte)this.boardSettings.AsyncDriverPeripheralID);
-            this.commandWriter.EndCommand();
+            this.SetAxesChannels(this.boardConfiguration.AxesSpacial.Select(a => (byte)this.boardConfiguration.Axes.IndexOf(a)).ToArray());
+            //this.SetAxesChannels(this.boardConfiguration.Axes.Select(a => (byte)this.boardConfiguration.Axes.IndexOf(a)).ToArray());
         }
 
         public void Polyline(CNCVector[] vectors)
         {
-            int numDimensions = this.boardSettings.AxesSettings.Count;
-            float speed = this.speed * this.stepMultiplicationFactor * 200.0f / 8.0f;
+            // TODO: Problematic - disregards settings - what if motors have different fullStepsPerTurn or axes have different unitsPerTurn?
+            const float fullStepsPerTurn = 200.0f;
+            const float unitsPerTurn = 8.0f;
 
-            this.commandWriter.BeginCommand(this.boardSettings.CNCPeripheralID, CommandCode_Polyline);
+            float speed = this.speed * this.stepMultiplicationFactor * fullStepsPerTurn / unitsPerTurn;
+
+            this.commandWriter.BeginCommand(this.boardConfiguration.CNCPeripheralID, CommandCode_CNCPeripheral_Polyline);
 
             this.commandWriter.WriteFloat32(speed);
 
             foreach (CNCVector vector in vectors)
-                for (int d = 0; d < numDimensions; d++)
-                    this.commandWriter.WriteFloat32(vector.values[d] * this.stepMultiplicationFactor * this.boardSettings.AxesSettings[d].StepsPerUnit);
+            {
+                int dimension = 0;
+                foreach (AsyncChannelConfiguration axis in this.boardConfiguration.AxesSpacial)
+                    this.commandWriter.WriteFloat32(vector.values[dimension++] * this.stepMultiplicationFactor * axis.Motor.StepsPerUnit);
+            }
+
 
             this.commandWriter.EndCommand();
         }
 
         public void Bezier(CNCVector[] vectors)
         {
-            int numDimensions = this.boardSettings.AxesSettings.Count;
-            float speed = this.speed * this.stepMultiplicationFactor * 200.0f / 8.0f;
+            // TODO: Problematic - disregards settings - what if motors have different fullStepsPerTurn or axes have different unitsPerTurn?
+            const float fullStepsPerTurn = 200.0f;
+            const float unitsPerTurn = 8.0f;
 
-            this.commandWriter.BeginCommand(this.boardSettings.CNCPeripheralID, CommandCode_Bezier);
+            float speed = this.speed * this.stepMultiplicationFactor * fullStepsPerTurn / unitsPerTurn;
+
+            this.commandWriter.BeginCommand(this.boardConfiguration.CNCPeripheralID, CommandCode_CNCPeripheral_Bezier);
 
             this.commandWriter.WriteFloat32(speed);
 
             foreach (CNCVector vector in vectors)
-                for (int d = 0; d < numDimensions; d++)
-                    this.commandWriter.WriteFloat32(vector.values[d] * this.stepMultiplicationFactor * this.boardSettings.AxesSettings[d].StepsPerUnit);
+            {
+                int dimension = 0;
+                foreach (AsyncChannelConfiguration axis in this.boardConfiguration.AxesSpacial)
+                    this.commandWriter.WriteFloat32(vector.values[dimension++] * this.stepMultiplicationFactor * axis.Motor.StepsPerUnit);
+            }
 
             this.commandWriter.EndCommand();
         }
 
         public void Arc(CNCVector semiMajorAxis, CNCVector semiMinorAxis, float startAngle, float endAngle)
         {
-            int numDimensions = this.boardSettings.AxesSettings.Count;
-            float speed = this.speed * this.stepMultiplicationFactor * 200.0f / 8.0f;
+            // TODO: Problematic - disregards settings - what if motors have different fullStepsPerTurn or axes have different unitsPerTurn?
+            const float fullStepsPerTurn = 200.0f;
+            const float unitsPerTurn = 8.0f;
 
-            this.commandWriter.BeginCommand(this.boardSettings.CNCPeripheralID, CommandCode_Arc);
+            float speed = this.speed * this.stepMultiplicationFactor * fullStepsPerTurn / unitsPerTurn;
+
+            this.commandWriter.BeginCommand(this.boardConfiguration.CNCPeripheralID, CommandCode_CNCPeripheral_Arc);
 
             this.commandWriter.WriteFloat32(speed);
 
             this.commandWriter.WriteFloat32(startAngle);
             this.commandWriter.WriteFloat32(endAngle);
 
-            for (int d = 0; d < numDimensions; d++)
-                this.commandWriter.WriteFloat32(semiMajorAxis.values[d] * this.stepMultiplicationFactor * this.boardSettings.AxesSettings[d].StepsPerUnit);
+            int dimension = 0;
+            foreach (AsyncChannelConfiguration axis in this.boardConfiguration.AxesSpacial)
+                this.commandWriter.WriteFloat32(semiMajorAxis.values[dimension++] * this.stepMultiplicationFactor * axis.Motor.StepsPerUnit);
 
-            for (int d = 0; d < numDimensions; d++)
-                this.commandWriter.WriteFloat32(semiMinorAxis.values[d] * this.stepMultiplicationFactor * this.boardSettings.AxesSettings[d].StepsPerUnit);
+            dimension = 0;
+            foreach (AsyncChannelConfiguration axis in this.boardConfiguration.AxesSpacial)
+                this.commandWriter.WriteFloat32(semiMinorAxis.values[dimension++] * this.stepMultiplicationFactor * axis.Motor.StepsPerUnit);
 
             this.commandWriter.EndCommand();
         }
@@ -168,56 +195,65 @@ namespace Palitri.OpenCNC.Driver
         public void Begin()
         {
             this.commandWriter.Reset();
+            this.commandWriter.BeginCommand((int)CommandIdOpenIoTTransmission.ExecutePeripheralCommand);
         }
 
         public void End()
         {
+            this.commandWriter.EndCommands();
         }
 
         public void Execute()
         {
             this.idleEvent.Reset();
-            
-            this.State = CNCState.Busy;
-            
-            this.board.SendCommand(CommandCode_SendCommand, this.commandWriter.Data, this.commandWriter.Size);
 
-            this.commandWriter.Reset();
+            this.State = CNCState.Busy;
+
+            this.board.SendChunk(this.commandWriter.Data, this.commandWriter.Size);
+            this.Begin();
 
             this.idleEvent.WaitOne();
         }
 
-        public void MapDevice(int channel, int peripheralId)
+        public void SetChannelsDevices(byte[] peripheralIds)
         {
-            this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_SetChannelDevice);
-            this.commandWriter.WriteUInt8((byte)channel);
-            this.commandWriter.WriteUInt8((byte)peripheralId);
+            this.commandWriter.BeginCommand(this.boardConfiguration.AsyncDriverPeripheralID, CommandCode_AsyncPeripheral_SetChannelsDevices);
+            this.commandWriter.WriteUInt8((byte)peripheralIds.Length);
+            foreach (int peripheralId in peripheralIds)
+                this.commandWriter.WriteUInt8((byte)peripheralId);
             this.commandWriter.EndCommand();
         }
 
-        public void SetDriveVector(int channel, float driveVector)
+        public void SetAxesChannels(byte[] channels)
         {
-            this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_SetVector);
+            int numChannels = channels == null ? 0 : channels.Length;
+
+            this.commandWriter.BeginCommand(this.boardConfiguration.CNCPeripheralID, CommandCode_CNCPeripheral_SetAxesChannels);
+            this.commandWriter.WriteUInt8((byte)numChannels);
+            for (int i = 0; i < numChannels; i++)
+                this.commandWriter.WriteUInt8((byte)channels[i]);
+            this.commandWriter.EndCommand();
+        }
+
+        public void SetDriveVector(int channel, float origin, float vector)
+        {
+            this.commandWriter.BeginCommand(this.boardConfiguration.AsyncDriverPeripheralID, CommandCode_AsyncPeripheral_SetVector);
             this.commandWriter.WriteUInt8((byte)channel);
-            this.commandWriter.WriteFloat32(driveVector);
+            this.commandWriter.WriteFloat32(origin);
+            this.commandWriter.WriteFloat32(vector);
+            this.commandWriter.EndCommand();
+        }
+        public void ResetDriveVectors()
+        {
+            this.commandWriter.BeginCommand(this.boardConfiguration.AsyncDriverPeripheralID, (int)CommandIdPeripheralAsyncDriver.ResetVectors);
             this.commandWriter.EndCommand();
         }
 
         public void Drive(float time)
         {
-            this.commandWriter.BeginCommand(this.boardSettings.AsyncDriverPeripheralID, CommandCode_Drive);
+            this.commandWriter.BeginCommand(this.boardConfiguration.AsyncDriverPeripheralID, CommandCode_AsyncPeripheral_Drive);
             this.commandWriter.WriteFloat32(time);
             this.commandWriter.EndCommand();
-        }
-
-        public void DriveLinear(float origin, float vector)
-        {
-            //Remove
-        }
-
-        public void DriveSine(float offset, float span, float amplitude, float phaseStart, float phaseEnd)
-        {
-            //Remove?
         }
 
         public void SetPropertyValue(int property, float value)
@@ -239,50 +275,65 @@ namespace Palitri.OpenCNC.Driver
             this.board.SendCommand(CommandCode_SetPropertiesValues, data);
         }
 
-        public void SetMotorsPowerMode(bool powerOn)
+        public void SetAxesEnabled(string groupName, bool enabled)
         {
-            foreach (AsyncChannelSetting axisSetting in this.boardSettings.AxesSettings)
-                BitUtils.SetBits(this.configurationBits, axisSetting.EnableBitmask, powerOn ? axisSetting.EnableValueOn : axisSetting.EnableValueOff);
+            foreach (AsyncChannelConfiguration axisSetting in this.boardConfiguration.Axes.Where(a => a.Enable != null && string.Equals(a.Group, groupName)))
+                BitUtils.SetBits(this.configurationBits, axisSetting.Enable.Bitmask, enabled ? axisSetting.Enable.On : axisSetting.Enable.Off);
 
             this.WriteCommandSetBits();
         }
 
-        public void SetMotorsStepMode(int motorGroup, CNCMotorStepMode stepMode)
+        public void SetMotorsPowerMode(bool enabled)
+        {
+            this.SetAxesEnabled(this.boardConfiguration.SpacialAxesGroupName, enabled);
+        }
+
+        public void SetMotorsStepMode(string groupName, CNCMotorStepMode stepMode)
         {
             this.stepMultiplicationFactor = (float)((int)stepMode);
 
-            foreach (AsyncChannelSetting axisSetting in this.boardSettings.AxesSettings)
+            foreach (AsyncChannelConfiguration axisSetting in this.boardConfiguration.Axes.Where(a => (string.Equals(a.Group, groupName) || string.IsNullOrWhiteSpace(groupName)) && a.Motor != null))
             {
                 byte[] stepModeValue;
                 switch (stepMode)
                 {
-                    case CNCMotorStepMode.Full: stepModeValue = axisSetting.StepModeValueFull; break;
-                    case CNCMotorStepMode.Half: stepModeValue = axisSetting.StepModeValueHalf; break;
-                    case CNCMotorStepMode.Quarter: stepModeValue = axisSetting.StepModeValueQuarter; break;
-                    case CNCMotorStepMode.Eighth: stepModeValue = axisSetting.StepModeValueEighth; break;
-                    case CNCMotorStepMode.Sixteenth: stepModeValue = axisSetting.StepModeValueSixteenth; break;
-                    default: stepModeValue = axisSetting.StepModeValueFull; break;
+                    case CNCMotorStepMode.Full: stepModeValue = axisSetting.Motor.StepMode.Full; break;
+                    case CNCMotorStepMode.Half: stepModeValue = axisSetting.Motor.StepMode.Half; break;
+                    case CNCMotorStepMode.Quarter: stepModeValue = axisSetting.Motor.StepMode.Quarter; break;
+                    case CNCMotorStepMode.Eighth: stepModeValue = axisSetting.Motor.StepMode.Eighth; break;
+                    case CNCMotorStepMode.Sixteenth: stepModeValue = axisSetting.Motor.StepMode.Sixteenth; break;
+                    default: stepModeValue = axisSetting.Motor.StepMode.Full; break;
                 }
 
-                BitUtils.SetBits(this.configurationBits, axisSetting.StepModeBitmask, stepModeValue);
+                BitUtils.SetBits(this.configurationBits, axisSetting.Motor.StepMode.Bitmask, stepModeValue);
             }
 
             this.WriteCommandSetBits();
         }
 
-        public void SetPower(float power)
+        public void SetMotorsStepMode(CNCMotorStepMode stepMode)
         {
-            this.commandWriter.BeginCommand(this.boardSettings.ToolPeripheralID, CommandCode_SetPWM);
-            this.commandWriter.WriteFloat32(power);
-            this.commandWriter.EndCommand();
+            SetMotorsStepMode(null, stepMode);
+        }
+
+        public void SetMotorsSleepMode(string groupName, bool sleep)
+        {
+            foreach (AsyncChannelConfiguration axisSetting in this.boardConfiguration.Axes.Where(a => (string.Equals(a.Group, groupName) || string.IsNullOrWhiteSpace(groupName)) && a.Motor != null))
+                BitUtils.SetBits(this.configurationBits, axisSetting.Motor.Sleep.Bitmask, sleep ? axisSetting.Motor.Sleep.On : axisSetting.Motor.Sleep.Off);
+
+            this.WriteCommandSetBits();
         }
 
         public void SetMotorsSleepMode(bool sleep)
         {
-            foreach (AsyncChannelSetting axisSetting in this.boardSettings.AxesSettings)
-                BitUtils.SetBits(this.configurationBits, axisSetting.SleepBitmask, sleep ? axisSetting.SleepValueOn : axisSetting.SleepValueOff);
+            this.SetMotorsSleepMode(null, sleep);
+        }
 
-            this.WriteCommandSetBits();
+        public void SetPower(float power)
+        {
+            this.commandWriter.BeginCommand(this.boardConfiguration.ToolPeripheralID, CommandCode_PinPeripheral_SetPWM);
+            this.commandWriter.WriteFloat32(power);
+            this.commandWriter.EndCommand();
         }
 
         public void SetSpeed(float speed)
@@ -292,14 +343,19 @@ namespace Palitri.OpenCNC.Driver
 
         public void SetToolPowerMode(bool awake)
         {
-            BitUtils.SetBits(this.configurationBits, this.boardSettings.ToolEnableBitmask, awake ? this.boardSettings.ToolEnableValueOn : this.boardSettings.ToolEnableValueOff);
+            BitUtils.SetBits(this.configurationBits, this.boardConfiguration.ToolEnable.Bitmask, awake ? this.boardConfiguration.ToolEnable.On : this.boardConfiguration.ToolEnable.Off);
 
             this.WriteCommandSetBits();
         }
 
         public void SetRelay(int relayIndex, bool enable)
         {
-            BitUtils.SetBits(this.configurationBits, this.boardSettings.RelayBitmask, enable ? this.boardSettings.RelayValueOn: this.boardSettings.RelayValueOff);
+            if ((this.boardConfiguration.SwitchesSettings == null) || (this.boardConfiguration.SwitchesSettings.Count <= relayIndex))
+                return;
+
+            SwitchConfiguration relaySettings = this.boardConfiguration.SwitchesSettings[relayIndex];
+
+            BitUtils.SetBits(this.configurationBits, relaySettings.Bitmask, enable ? relaySettings.On: relaySettings.Off);
 
             this.WriteCommandSetBits();
         }
@@ -310,7 +366,7 @@ namespace Palitri.OpenCNC.Driver
             float vector = frequency * duration;
             foreach (int channel in channels)
             {
-                this.SetDriveVector(channel, vector);
+                this.SetDriveVector(channel, 0.0f, vector);
             }
 
             this.Drive(duration);
@@ -318,14 +374,18 @@ namespace Palitri.OpenCNC.Driver
 
         public void Wait(float time)
         {
-            this.commandWriter.BeginCommand(this.boardSettings.CNCPeripheralID, CommandCode_Wait);
+            this.commandWriter.EndCommands();
+
+            this.commandWriter.BeginCommand(CommandCode_Wait);
             this.commandWriter.WriteFloat32(time);
             this.commandWriter.EndCommand();
+
+            this.commandWriter.BeginCommand(CommandCode_ExecutePeripheralCommand);
         }
 
         private void WriteCommandSetBits()
         {
-            this.commandWriter.BeginCommand(this.boardSettings.ShiftRegPeripheralID, CommandCode_SetBits);
+            this.commandWriter.BeginCommand(this.boardConfiguration.ShiftRegPeripheralID, CommandCode_ShiftRegPeripheral_SetBits);
             this.commandWriter.WriteUInt8(this.configurationBits[0]);
             this.commandWriter.WriteUInt8(this.configurationBits[1]);
             this.commandWriter.WriteUInt8(this.configurationBits[2]);

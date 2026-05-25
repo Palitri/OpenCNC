@@ -1,0 +1,113 @@
+{
+	"AsyncDriverPeripheralID": 1,
+	"CNCPeripheralID": 2,
+	"ShiftRegPeripheralID": 4,
+	"ControlBitsCount": 32,
+	"ToolPeripheralID": 3,
+	"ToolEnable": {
+		"Bitmask":	"00000001",
+		"On":		"00000001",
+		"Off":		"00000000"
+	},
+	"SpacialAxesGroupName": "Spacial",
+	"Axes": [
+		{
+			"Group": "Spacial",
+			"PeripheralId":5,
+			"Mapping": "Space.X,Color.R,Stroke.Width",
+			"Enable": {
+				"Bitmask":		"10000000",
+				"On":			"00000000",
+				"Off":			"10000000"
+			},
+			"Motor": {
+				"PropertyIdSpeed": 8,
+				"PropertyIdTurn": 9,
+				"StepsPerUnit":25,
+				"Sleep": {
+					"Bitmask":		"00000100",
+					"On":			"00000000",
+					"Off":			"00000100"
+				},
+				"StepMode": {
+					"Bitmask":		"01110000",
+					"Full":			"00000000",
+					"Half":			"01000000",
+					"Quarter":		"00100000",
+					"Eighth":		"01100000",
+					"Sixteenth":	"01110000"
+				}
+			}
+		},
+		{
+			"Group": "Spacial",
+			"PeripheralId":0,
+			"Enable": {
+				"Bitmask":		"10000000 00000000",
+				"On":			"00000000 00000000",
+				"Off":			"10000000 00000000"
+			},
+			"Motor": {
+				"PropertyIdSpeed": 1,
+				"PropertyIdTurn": 2,
+				"StepsPerUnit":25,
+				"Sleep": {
+					"Bitmask":		"00000100 00000000",
+					"On":			"00000000 00000000",
+					"Off":			"00000100 00000000"
+				},
+				"StepMode": {
+					"Bitmask":		"01110000 00000000",
+					"Full":			"00000000 00000000",
+					"Half":			"01000000 00000000",
+					"Quarter":		"00100000 00000000",
+					"Eighth":		"01100000 00000000",
+					"Sixteenth":	"01110000 00000000"
+				}
+			}
+		},
+		{
+			"Group": "Spacial",
+			"PeripheralId":7,
+			"Enable": {
+				"Bitmask":		"10000000 00000000 00000000",
+				"On":			"00000000 00000000 00000000",
+				"Off":			"10000000 00000000 00000000"
+			},
+			"Motor": {
+				"PropertyIdSpeed": 18,
+				"PropertyIdTurn": 19,
+				"StepsPerUnit":25,
+				"Sleep": {
+					"Bitmask":		"00000100 00000000 00000000",
+					"On":			"00000000 00000000 00000000",
+					"Off":			"00000100 00000000 00000000"
+				},
+				"StepMode": {
+					"Bitmask":		"01110000 00000000 00000000",
+					"Full":			"00000000 00000000 00000000",
+					"Half":			"01000000 00000000 00000000",
+					"Quarter":		"00100000 00000000 00000000",
+					"Eighth":		"01100000 00000000 00000000",
+					"Sixteenth":	"01110000 00000000 00000000"
+				}
+			}
+		},
+		{
+			"Group": "Tool",
+			"PeripheralId":3,
+			"Enable": {
+				"Bitmask":	"00000001",
+				"On":		"00000001",
+				"Off":		"00000000"
+			}
+		}
+	],
+	"SwitchesSettings": [
+		{
+			"Bitmask":	"00000001 00000000 00000000 00000000",
+			"On":		"00000001 00000000 00000000 00000000",
+			"Off":		"00000000 00000000 00000000 00000000"
+		}
+	]
+}

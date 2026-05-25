@@ -1,10 +1,5 @@
-﻿using Palitri.OpenCNC.Script;
-using System;
-using System.Collections.Generic;
+﻿using Palitri.OpenCNC.Driver;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Palitri.OpenCNC.Script.Utils
 {
@@ -95,16 +90,21 @@ namespace Palitri.OpenCNC.Script.Utils
 
         public static bool TryParse<T>(string value, out T result, out string message)
         {
-            message = null;
+            bool success = TryParse(value, typeof(T), out object? objResult, out message);
+            result = (T)objResult;
+            return success;
+        }
 
-            Type type = typeof(T);
+        public static bool TryParse(string value, Type type, out object? result, out string message)
+        {
+            message = null;
 
             if (type == typeof(bool))
             {
                 bool bResult;
                 if (ParseBool(value, out bResult))
                 {
-                    result = (T)(object)bResult;
+                    result = bResult;
                     return true;
                 }
             }
@@ -112,17 +112,30 @@ namespace Palitri.OpenCNC.Script.Utils
             try
             {
                 TypeConverter typeConverter = TypeDescriptor.GetConverter(type);
-                result = (T)typeConverter.ConvertFromString(value);
+                result = typeConverter.ConvertFromString(value);
                 return true;
             }
             catch
             {
             }
 
-            result = (T)(type.IsValueType ? Activator.CreateInstance(type) : null);
-            message = string.Format("Could not parse parameter {0}.\r\nExpected type is {1}.", value, type.Name);
+            result = type.IsValueType ? Activator.CreateInstance(type) : null;
+            message = string.Format("Could not parse value {0}. Expected type is {1}.", value, type.Name);
             return false;
+        }
 
+        public static CNCVector VectorFromValues(int valuesOffset, int dimensions, Dictionary<string, object> values)
+        {
+            CNCVector result = new CNCVector(dimensions);
+            for (int d = 0; d < dimensions; d++)
+                result.values[d] = (float)values.ElementAt(d + valuesOffset).Value;
+
+            return result;
+        }
+
+        public static bool AxisGroupsEqual(string group1Name, string group2Name)
+        {
+            return string.Equals(group1Name, group2Name, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

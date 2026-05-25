@@ -29,8 +29,9 @@ namespace Palitri.Graphics.Devices
         {
         }
 
-        public virtual void Polyline(Vector2[] vertices)
+        public virtual void Polyline(Vector2[] vertices, Vector4 color)
         {
+            //this.canvasPen.Color = Color.FromArgb((int)(color.w * 255.0f), (int)(color.x * 255.0f), (int)(color.y * 255.0f), (int)(color.z * 255.0f));
             this.canvasGraphics.DrawLines(this.canvasPen, vertices.Select(p => new PointF(p.x, p.y)).ToArray());
         }
 

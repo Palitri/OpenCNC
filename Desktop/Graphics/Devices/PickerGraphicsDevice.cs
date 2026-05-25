@@ -35,7 +35,7 @@ namespace Palitri.Graphics.Devices
         {
         }
 
-        public virtual void Polyline(Vector2[] vertices)
+        public virtual void Polyline(Vector2[] vertices, Vector4 color)
         {
             if (this.IsPicked)
                 return;
