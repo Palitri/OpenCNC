@@ -208,7 +208,7 @@ namespace Palitri.OpenCNC.App
             this.cnc.SetToolPowerMode(true);
             this.cnc.SetPower(this.appSettings.IdlePower);
             this.cnc.SetMotorsPowerMode(false);
-            this.cnc.SetMotorsStepMode(0, this.appSettings.StepMode);
+            this.cnc.SetMotorsStepMode(this.appSettings.StepMode);
             this.cnc.SetSpeed(this.appSettings.MoveSpeed);
             this.cnc.End();
             this.cnc.Execute();
@@ -677,7 +677,7 @@ namespace Palitri.OpenCNC.App
 
         private void consoleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConsoleForm consoleForm = new ConsoleForm(this.cnc, this.boardConfiguration.Axes.Count);
+            ConsoleForm consoleForm = new ConsoleForm(this.cnc, this.boardConfiguration.AxesSpacial.Count(), this.boardConfiguration);
             consoleForm.ShowDialog();
         }
 

@@ -127,6 +127,7 @@ namespace Palitri.SVG.Elements
         public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
             SVGPathRenderingParameters renderParams = new SVGPathRenderingParameters();
+            renderParams.color = this.Color;
 
             foreach (IPathElement element in this.elements)
                 element.Render(transform, g, renderParams);

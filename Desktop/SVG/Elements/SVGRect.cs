@@ -22,7 +22,7 @@ namespace Palitri.SVG.Elements
 
         public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
-            g.Polyline(new Vector2[] { transform.Transform(this.x, this.y), transform.Transform(this.x + this.width, this.y), transform.Transform(this.x + this.width, this.y + this.height), transform.Transform(this.x, this.y + this.height), transform.Transform(this.x, this.y) });
+            g.Polyline(new Vector2[] { transform.Transform(this.x, this.y), transform.Transform(this.x + this.width, this.y), transform.Transform(this.x + this.width, this.y + this.height), transform.Transform(this.x, this.y + this.height), transform.Transform(this.x, this.y) }, this.Color);
         }
     }
 }

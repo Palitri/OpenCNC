@@ -14,13 +14,17 @@ namespace Palitri.OpenCNC.Driver.Settings
     {
         public class AsyncChannelConfiguration
         {
+            public string Group { get; set; }
             public int PeripheralId { get; set; }
-            public int StepsPerUnit { get; set; }
+            public SwitchConfiguration? Enable { get; set; }
+            public StepMotorConfiguration? Motor { get; set; }
+        }
 
+        public class StepMotorConfiguration
+        {
+            public int StepsPerUnit { get; set; }
             public int PropertyIdSpeed { get; set; }
             public int PropertyIdTurn { get; set; }
-
-            public SwitchConfiguration? Enable { get; set; }
 
             public SwitchConfiguration? Sleep { get; set; }
 
@@ -67,8 +71,9 @@ namespace Palitri.OpenCNC.Driver.Settings
         public int ControlBitsCount { get; set; }
 
         public SwitchConfiguration ToolEnable { get; set; }
-
+        public string SpacialAxesGroupName { get; set; }
         public List<AsyncChannelConfiguration> Axes { get; set; }
+        public IEnumerable<AsyncChannelConfiguration> AxesSpacial => Axes.Where(a => string.Equals(a.Group, SpacialAxesGroupName));
 
         public List<SwitchConfiguration> SwitchesSettings { get; set; }
         public static OpenIoTBoardConfiguration LoadJSON(string fileName)

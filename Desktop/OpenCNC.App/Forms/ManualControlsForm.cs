@@ -21,6 +21,7 @@ namespace Palitri.OpenCNC.App
         private ICNC cnc;
         private OpenCNCAppSettings settings;
         private OpenIoTBoardConfiguration boardConfiguration;
+        private List<AsyncChannelConfiguration> motorAxes;
 
         public ManualControlsForm(ICNC cnc, OpenCNCAppSettings settings, OpenIoTBoardConfiguration boardConfiguration)
         {
@@ -30,18 +31,20 @@ namespace Palitri.OpenCNC.App
             this.settings = settings;
             this.boardConfiguration = boardConfiguration;
 
-            this.thumbwheelX.Visible = this.boardConfiguration.Axes.Count > 0;
-            this.thumbwheelY.Visible = this.boardConfiguration.Axes.Count > 1;
-            this.thumbwheelZ.Visible = this.boardConfiguration.Axes.Count > 2;
-            
-            this.thumbwheelXY.Visible = this.boardConfiguration.Axes.Count > 1;
-            this.thumbwheelXZ.Visible = this.boardConfiguration.Axes.Count > 2;
-            this.thumbwheelYZ.Visible = this.boardConfiguration.Axes.Count > 2;
+            this.motorAxes = this.boardConfiguration.AxesSpacial.ToList();
 
-            this.thumbwheelArbitrary.Visible = this.boardConfiguration.Axes.Count > 3;
-            this.comboArbitraryAxis.Visible = this.boardConfiguration.Axes.Count > 4;
+            this.thumbwheelX.Visible = this.motorAxes.Count > 0;
+            this.thumbwheelY.Visible = this.motorAxes.Count > 1;
+            this.thumbwheelZ.Visible = this.motorAxes.Count > 2;
+            
+            this.thumbwheelXY.Visible = this.motorAxes.Count > 1;
+            this.thumbwheelXZ.Visible = this.motorAxes.Count > 2;
+            this.thumbwheelYZ.Visible = this.motorAxes.Count > 2;
+
+            this.thumbwheelArbitrary.Visible = this.motorAxes.Count > 3;
+            this.comboArbitraryAxis.Visible = this.motorAxes.Count > 4;
             this.comboArbitraryAxis.Items.Clear();
-            for (int i = 3; i < this.boardConfiguration.Axes.Count; i++)
+            for (int i = 3; i < this.motorAxes.Count; i++)
                 this.comboArbitraryAxis.Items.Add(i.ToString());
             if (this.comboArbitraryAxis.Items.Count > 0)
                 this.comboArbitraryAxis.SelectedIndex = 0;
@@ -54,18 +57,18 @@ namespace Palitri.OpenCNC.App
             float speed = senderThumbwheel.Value / 50.0f;
             if (axes.Length == 2)
             {
-                AsyncChannelConfiguration configX = this.boardConfiguration.Axes[axes[0]];
-                this.cnc.SetPropertyValue(configX.PropertyIdSpeed, -senderThumbwheel.ValueComponents.X / 50.0f);
+                AsyncChannelConfiguration configX = this.motorAxes[axes[0]];
+                this.cnc.SetPropertyValue(configX.Motor.PropertyIdSpeed, -senderThumbwheel.ValueComponents.X / 50.0f);
 
-                AsyncChannelConfiguration configY = this.boardConfiguration.Axes[axes[1]];
-                this.cnc.SetPropertyValue(configY.PropertyIdSpeed, senderThumbwheel.ValueComponents.Y  / 50.0f);
+                AsyncChannelConfiguration configY = this.motorAxes[axes[1]];
+                this.cnc.SetPropertyValue(configY.Motor.PropertyIdSpeed, senderThumbwheel.ValueComponents.Y  / 50.0f);
             }
             else
             {
                 foreach (int axis in axes)
                 {
-                    AsyncChannelConfiguration configuration = this.boardConfiguration.Axes[axis];
-                    this.cnc.SetPropertyValue(configuration.PropertyIdSpeed, speed);
+                    AsyncChannelConfiguration configuration = this.motorAxes[axis];
+                    this.cnc.SetPropertyValue(configuration.Motor.PropertyIdSpeed, speed);
                 }
             }
         }
@@ -83,9 +86,9 @@ namespace Palitri.OpenCNC.App
                 int[] axes = senderThumbwheel.Tag.ToString().Split(',').Select(s => int.Parse(s.Trim())).ToArray();
                 foreach (int axis in axes)
                 {
-                    AsyncChannelConfiguration configuration = this.boardConfiguration.Axes[axis];
-                    this.cnc.SetPropertyValue(configuration.PropertyIdSpeed, 0.0f);
-                    this.cnc.SetPropertyValue(configuration.PropertyIdTurn, true);
+                    AsyncChannelConfiguration configuration = this.motorAxes[axis];
+                    this.cnc.SetPropertyValue(configuration.Motor.PropertyIdSpeed, 0.0f);
+                    this.cnc.SetPropertyValue(configuration.Motor.PropertyIdTurn, true);
                 }
 
             }).Start();
@@ -99,9 +102,9 @@ namespace Palitri.OpenCNC.App
                 int[] axes = senderThumbwheel.Tag.ToString().Split(',').Select(s => int.Parse(s.Trim())).ToArray();
                 foreach (int axis in axes)
                 {
-                    AsyncChannelConfiguration configuration = this.boardConfiguration.Axes[axis];
-                    this.cnc.SetPropertyValue(configuration.PropertyIdSpeed, 0.0f);
-                    this.cnc.SetPropertyValue(configuration.PropertyIdTurn, false);
+                    AsyncChannelConfiguration configuration = this.motorAxes[axis];
+                    this.cnc.SetPropertyValue(configuration.Motor.PropertyIdSpeed, 0.0f);
+                    this.cnc.SetPropertyValue(configuration.Motor.PropertyIdTurn, false);
                 }
 
 

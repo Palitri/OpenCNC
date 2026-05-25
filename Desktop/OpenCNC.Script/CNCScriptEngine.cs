@@ -1,4 +1,6 @@
-﻿using Palitri.OpenCNC.Driver;
+﻿using OpenCNC.Script;
+using OpenCNC.Script.Commands.Extensions;
+using Palitri.OpenCNC.Driver;
 using Palitri.OpenCNC.Script.Commands;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ namespace Palitri.OpenCNC.Script
     {
         public List<ICNCScriptCommand> commands;
 
-        public CNCScriptEngine(int dimensions)
+        public CNCScriptEngine(int dimensions, ICNCScriptExtensionsHandler extensionsHandler)
         {
             this.commands = new List<ICNCScriptCommand>()
             {
@@ -23,18 +25,25 @@ namespace Palitri.OpenCNC.Script
                 new CNCScriptCommandPolyline(dimensions),
                 new CNCScriptCommandArc(dimensions),
                 new CNCScriptCommandBezier(dimensions),
-                new CNCScriptCommandSetMotorsPowerMode(),
-                new CNCScriptCommandSetMotorsStepMode(),
-                new CNCScriptCommandSetPowerMode(),
+                new CNCScriptCommandMapAxesDevices(),
+                new CNCScriptCommandMapSpacialAxes(),
+                new CNCScriptCommandSetAxesEnable(),
+                new CNCScriptCommandSetAxesStepMode(),
+                new CNCScriptCommandSetAxesSleepMode(),
+                new CNCScriptCommandSetToolPower(),
                 new CNCScriptCommandSetToolPowerMode(),
-                new CNCScriptCommandMapDevice(),
-                new CNCScriptCommandSetPower(),
                 new CNCScriptCommandSetSpeed(),
-                new CNCScriptCommandSetRelay(),
                 new CNCScriptCommandSetDriveVector(),
+                new CNCScriptCommandSetRelay(),
+                new CNCScriptCommandDrive(),
+                new CNCScriptCommandDriveReset(),
                 new CNCScriptCommandTone(),
                 new CNCScriptCommandWait(),
-                new CNCScriptCommandDrive(),
+
+                new CNCScriptCommandExtensionListCommands(extensionsHandler),
+                new CNCScriptCommandExtensionListAxisGroups(extensionsHandler),
+                new CNCScriptCommandExtensionClear(extensionsHandler),
+                new CNCScriptCommandExtensionExit(extensionsHandler),
             };
         }
 

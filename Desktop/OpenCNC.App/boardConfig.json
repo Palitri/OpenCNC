@@ -1,88 +1,105 @@
 {
 	"AsyncDriverPeripheralID": 1,
 	"CNCPeripheralID": 2,
-	"ToolPeripheralID": 3,
-	"ShiftRegPeripheralID":4,
+	"ShiftRegPeripheralID": 4,
 	"ControlBitsCount": 32,
+	"ToolPeripheralID": 3,
 	"ToolEnable": {
 		"Bitmask":	"00000001",
 		"On":		"00000001",
 		"Off":		"00000000"
 	},
+	"SpacialAxesGroupName": "Spacial",
 	"Axes": [
 		{
-			"Spacial": true,
-			"PropertyIdSpeed": 8,
-			"PropertyIdTurn": 9,
+			"Group": "Spacial",
 			"PeripheralId":5,
-			"StepsPerUnit":25,
+			"Mapping": "Space.X,Color.R,Stroke.Width",
 			"Enable": {
 				"Bitmask":		"10000000",
 				"On":			"00000000",
 				"Off":			"10000000"
 			},
-			"Sleep": {
-				"Bitmask":		"00000100",
-				"On":			"00000000",
-				"Off":			"00000100"
-			},
-			"StepMode": {
-				"Bitmask":		"01110000",
-				"Full":			"00000000",
-				"Half":			"01000000",
-				"Quarter":		"00100000",
-				"Eighth":		"01100000",
-				"Sixteenth":	"01110000"
+			"Motor": {
+				"PropertyIdSpeed": 8,
+				"PropertyIdTurn": 9,
+				"StepsPerUnit":25,
+				"Sleep": {
+					"Bitmask":		"00000100",
+					"On":			"00000000",
+					"Off":			"00000100"
+				},
+				"StepMode": {
+					"Bitmask":		"01110000",
+					"Full":			"00000000",
+					"Half":			"01000000",
+					"Quarter":		"00100000",
+					"Eighth":		"01100000",
+					"Sixteenth":	"01110000"
+				}
 			}
 		},
 		{
-			"Spacial": true,
-			"PropertyIdSpeed": 1,
-			"PropertyIdTurn": 2,
+			"Group": "Spacial",
 			"PeripheralId":0,
-			"StepsPerUnit":25,
 			"Enable": {
 				"Bitmask":		"10000000 00000000",
 				"On":			"00000000 00000000",
 				"Off":			"10000000 00000000"
 			},
-			"Sleep": {
-				"Bitmask":		"00000100 00000000",
-				"On":			"00000000 00000000",
-				"Off":			"00000100 00000000"
-			},
-			"StepMode": {
-				"Bitmask":		"01110000 00000000",
-				"Full":			"00000000 00000000",
-				"Half":			"01000000 00000000",
-				"Quarter":		"00100000 00000000",
-				"Eighth":		"01100000 00000000",
-				"Sixteenth":	"01110000 00000000"
+			"Motor": {
+				"PropertyIdSpeed": 1,
+				"PropertyIdTurn": 2,
+				"StepsPerUnit":25,
+				"Sleep": {
+					"Bitmask":		"00000100 00000000",
+					"On":			"00000000 00000000",
+					"Off":			"00000100 00000000"
+				},
+				"StepMode": {
+					"Bitmask":		"01110000 00000000",
+					"Full":			"00000000 00000000",
+					"Half":			"01000000 00000000",
+					"Quarter":		"00100000 00000000",
+					"Eighth":		"01100000 00000000",
+					"Sixteenth":	"01110000 00000000"
+				}
 			}
 		},
 		{
-			"Spacial": true,
-			"PropertyIdSpeed": 18,
-			"PropertyIdTurn": 19,
+			"Group": "Spacial",
 			"PeripheralId":7,
-			"StepsPerUnit":25,
 			"Enable": {
 				"Bitmask":		"10000000 00000000 00000000",
 				"On":			"00000000 00000000 00000000",
 				"Off":			"10000000 00000000 00000000"
 			},
-			"Sleep": {
-				"Bitmask":		"00000100 00000000 00000000",
-				"On":			"00000000 00000000 00000000",
-				"Off":			"00000100 00000000 00000000"
-			},
-			"StepMode": {
-				"Bitmask":		"01110000 00000000 00000000",
-				"Full":			"00000000 00000000 00000000",
-				"Half":			"01000000 00000000 00000000",
-				"Quarter":		"00100000 00000000 00000000",
-				"Eighth":		"01100000 00000000 00000000",
-				"Sixteenth":	"01110000 00000000 00000000"
+			"Motor": {
+				"PropertyIdSpeed": 18,
+				"PropertyIdTurn": 19,
+				"StepsPerUnit":25,
+				"Sleep": {
+					"Bitmask":		"00000100 00000000 00000000",
+					"On":			"00000000 00000000 00000000",
+					"Off":			"00000100 00000000 00000000"
+				},
+				"StepMode": {
+					"Bitmask":		"01110000 00000000 00000000",
+					"Full":			"00000000 00000000 00000000",
+					"Half":			"01000000 00000000 00000000",
+					"Quarter":		"00100000 00000000 00000000",
+					"Eighth":		"01100000 00000000 00000000",
+					"Sixteenth":	"01110000 00000000 00000000"
+				}
+			}
+		},
+		{
+			"Group": "Tool",
+			"PeripheralId":3,
+			"Enable": {
+				"Bitmask":	"00000001",
+				"On":		"00000001",
+				"Off":		"00000000"
 			}
 		}
 	],
