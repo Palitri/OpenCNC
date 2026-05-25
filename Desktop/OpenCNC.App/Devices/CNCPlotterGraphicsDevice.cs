@@ -78,11 +78,6 @@ namespace Palitri.OpenCNC.App
         public void IssueMove(Vector2 vector)
         {
             this.IssueMoveLinear(vector);
-            //this.IssueMoveSine(vector);
-            //if (vector.Length > 30.0f)
-            //    this.IssueMoveSine(vector);
-            //else
-            //    this.IssueMoveLinear(vector);
         }
 
         public void IssueMoveLinear(Vector2 vector)
@@ -114,25 +109,6 @@ namespace Palitri.OpenCNC.App
             this.cnc.End();
             this.cnc.Execute();
             this.cnc.Begin();
-        }
-
-        public void IssueMoveSine(Vector2 vector)
-        {
-            CNCVector move = SVGToCNCVector(vector);
-
-            if ((move.X == 0.0f) && (move.Y == 0.0f) && (move.Z == 0.0f))
-                return;
-
-            this.cnc.SetSpeed(this.settings.MoveSpeed);
-            this.cnc.SetPower(this.settings.OffPower);
-            if (this.settings.DisengagementDistance != 0.0f)
-                this.cnc.Polyline(new CNCVector[] { new CNCVector(0.0f, 0.0f, this.settings.DisengagementDistance) });
-            this.cnc.DriveSine(0.5f, move.X, 1.0f, -0.25f, 0.25f);
-            this.cnc.DriveSine(0.5f, move.Y, 1.0f, -0.25f, 0.25f);
-            this.cnc.DriveSine(0.5f, move.Z, 1.0f, -0.25f, 0.25f);
-            this.cnc.Drive(vector.Length / this.settings.MoveSpeed);
-            if (this.settings.DisengagementDistance != 0.0f)
-                this.cnc.Polyline(new CNCVector[] { new CNCVector(0.0f, 0.0f, -this.settings.DisengagementDistance) });
         }
 
         private ICNC cnc;
@@ -172,7 +148,7 @@ namespace Palitri.OpenCNC.App
             this.cnc.Execute();
         }
 
-        public void Polyline(Vector2[] vertices)
+        public void Polyline(Vector2[] vertices, Vector4 color)
         {
             if (this.isCancelled)
                 return;

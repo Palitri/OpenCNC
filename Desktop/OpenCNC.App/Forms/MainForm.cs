@@ -64,7 +64,7 @@ namespace Palitri.OpenCNC.App
         private CNCCanvasGraphicsDevice canvasRenderer;
 
         private OpenCNCAppSettings appSettings;
-        private OpenIoTBoardSettings boardSettings;
+        private OpenIoTBoardConfiguration boardConfiguration;
 
 
         public MainForm()
@@ -74,8 +74,8 @@ namespace Palitri.OpenCNC.App
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.appSettings = new OpenCNCAppSettings(settingsFileName);
-            this.boardSettings = OpenIoTBoardSettings.LoadSettings(iotBoardSettingsFileName);
+            this.appSettings = OpenCNCAppSettings.LoadFromFile(settingsFileName);
+            this.boardConfiguration = OpenIoTBoardConfiguration.LoadJSON(boardConfigFileName);
 
             this.board = new OpenIoTBoard();
             this.board.EventHandlers.Add(new MainFormBoardEventHandler(this));
@@ -115,7 +115,7 @@ namespace Palitri.OpenCNC.App
             this.board.transmissionChannel = new ComTransmissionChannel(args.Info.Port);
             this.board.Open();
 
-            this.cnc = new CNCOpenIoTDevice(this.board, this.boardSettings);
+            this.cnc = new CNCOpenIoTDevice(this.board, this.boardConfiguration);
 
             this.cnc_Connected(this);
 
@@ -139,8 +139,8 @@ namespace Palitri.OpenCNC.App
         /// </summary>
 
 
-        private const string settingsFileName = "settings.xml";
-        private const string iotBoardSettingsFileName = "boardSettings.json";
+        private const string settingsFileName = "appSettings.json";
+        private const string boardConfigFileName = "boardConfig.json";
 
         private CNCOpenIoTDevice cnc;
 
@@ -206,8 +206,9 @@ namespace Palitri.OpenCNC.App
             this.cnc.Begin();
             this.cnc.SetMotorsSleepMode(false);
             this.cnc.SetToolPowerMode(true);
+            this.cnc.SetPower(this.appSettings.IdlePower);
             this.cnc.SetMotorsPowerMode(false);
-            this.cnc.SetMotorsStepMode(0, this.appSettings.StepMode);
+            this.cnc.SetMotorsStepMode(this.appSettings.StepMode);
             this.cnc.SetSpeed(this.appSettings.MoveSpeed);
             this.cnc.End();
             this.cnc.Execute();
@@ -602,14 +603,14 @@ namespace Palitri.OpenCNC.App
 
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.board.RequestAllDeviceProperties();
-            //this.board.RequestBoardInfo();
+            //this.board.RequestAllDeviceProperties();
+            this.board.RequestBoardInfo();
             //MessageBox.Show(this.cnc.Info, "Device info");
         }
 
         private void manualConrolsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ManualControlsForm controlsForm = new ManualControlsForm(this.cnc, this.appSettings, this.boardSettings);
+            ManualControlsForm controlsForm = new ManualControlsForm(this.cnc, this.appSettings, this.boardConfiguration);
             controlsForm.ShowDialog();
         }
 
@@ -676,7 +677,7 @@ namespace Palitri.OpenCNC.App
 
         private void consoleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConsoleForm consoleForm = new ConsoleForm(this.cnc, this.boardSettings.AxesSettings.Count);
+            ConsoleForm consoleForm = new ConsoleForm(this.cnc, this.boardConfiguration.AxesSpacial.Count(), this.boardConfiguration);
             consoleForm.ShowDialog();
         }
 

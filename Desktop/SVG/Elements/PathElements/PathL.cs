@@ -15,14 +15,14 @@ namespace Palitri.SVG.Elements.PathElements
         {
             if (this.relative)
             {
-                g.Polyline(new Vector2[] { transform.Transform(renderingParams.pos), transform.Transform(renderingParams.pos.x + this.x, renderingParams.pos.y + this.y) });
+                g.Polyline(new Vector2[] { transform.Transform(renderingParams.pos), transform.Transform(renderingParams.pos.x + this.x, renderingParams.pos.y + this.y) }, renderingParams.color);
 
                 renderingParams.pos.x += this.x;
                 renderingParams.pos.y += this.y;
             }
             else
             {
-                g.Polyline(new Vector2[] { transform.Transform(renderingParams.pos), transform.Transform(this.x, this.y) });
+                g.Polyline(new Vector2[] { transform.Transform(renderingParams.pos), transform.Transform(this.x, this.y) }, renderingParams.color);
 
                 renderingParams.pos.x = this.x;
                 renderingParams.pos.y = this.y;

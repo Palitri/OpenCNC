@@ -41,12 +41,12 @@ namespace Palitri.OpenCNC.App.Devices
             this.renderPrimitiveIndex = 0;
         }
 
-        public override void Polyline(Vector2[] vertices)
+        public override void Polyline(Vector2[] vertices, Vector4 color)
         {
             this.renderPrimitiveIndex++;
             this.canvasPen = this.ActivePen;
 
-            base.Polyline(vertices);
+            base.Polyline(vertices, color);
         }
 
         public override void Arc(Vector2 origin, Vector2 semiMajorAxis, Vector2 semiMinorAxis, float startAngle, float endAngle)

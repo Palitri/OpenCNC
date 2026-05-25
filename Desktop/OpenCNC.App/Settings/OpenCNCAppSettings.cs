@@ -1,16 +1,9 @@
-﻿using Palitri.OpenCNC.App.Common;
-using OrderedPropertyGrid;
+﻿using OrderedPropertyGrid;
+using Palitri.OpenCNC.App.Common;
 using Palitri.OpenCNC.Driver;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml;
+using System.Text.Json;
 using System.Xml.Serialization;
 
 namespace Palitri.OpenCNC.App.Settings
@@ -196,14 +189,7 @@ namespace Palitri.OpenCNC.App.Settings
             SetDefaults();
         }
 
-        public OpenCNCAppSettings(string fileName)
-        {
-            SetDefaults();
-
-            LoadFromFile(fileName);
-        }
-
-        public void LoadFromFile(string fileName)
+        public void LoadFromXmlFile(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 return;
@@ -228,7 +214,7 @@ namespace Palitri.OpenCNC.App.Settings
             }
         }
 
-        public void SaveToFile(string fileName)
+        public void SaveToXmlFile(string fileName)
         {
             try
             {
@@ -242,6 +228,41 @@ namespace Palitri.OpenCNC.App.Settings
             catch (Exception ex)
             {
             }
+        }
+
+        public string ToJson()
+        {
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            };
+
+            return JsonSerializer.Serialize(this, options);
+        }
+
+        public void SaveToJsonFile(string fileName)
+        {
+            File.WriteAllText(fileName, this.ToJson());
+        }
+
+        public static OpenCNCAppSettings LoadFromJson(string json)
+        {
+            return JsonSerializer.Deserialize<OpenCNCAppSettings>(json);
+        }
+        public static OpenCNCAppSettings LoadFromJsonFile(string fileName)
+        {
+            string jsonContent = File.ReadAllText(fileName);
+            return LoadFromJson(jsonContent);
+        }
+
+        public static OpenCNCAppSettings LoadFromFile(string fileName)
+        {
+            return LoadFromJsonFile(fileName);
+        }
+
+        public void SaveToFile(string fileName)
+        {
+            this.SaveToJsonFile(fileName);
         }
 
         public void SetDefaults()

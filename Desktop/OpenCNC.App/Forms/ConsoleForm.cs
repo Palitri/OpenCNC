@@ -1,6 +1,9 @@
-﻿using Palitri.OpenCNC.App.Rendering;
-using Palitri.OpenCNC.Script;
+﻿using OpenCNC.Script;
+using Palitri.OpenCNC.App.Rendering;
 using Palitri.OpenCNC.Driver;
+using Palitri.OpenCNC.Driver.Settings;
+using Palitri.OpenCNC.Script;
+using Palitri.OpenCNC.Script.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,24 +17,29 @@ using System.Windows.Forms;
 
 namespace Palitri.OpenCNC.App
 {
-    public partial class ConsoleForm : Form
+    public partial class ConsoleForm : Form, ICNCScriptExtensionsHandler
     {
         private ICNC cnc;
-        private CNCScriptEngine scriptEngine;
         private ScriptHintRenderer hintRenderer;
 
         private int historyIndex = 0;
-       
 
-        public ConsoleForm(ICNC cnc, int dimensions)
+        #region ICNCScriptExtensionsHandler properties
+        public CNCScriptEngine ScriptEngine { get; private set; }
+        public OpenIoTBoardConfiguration BoardConfig { get; private set; }
+        #endregion
+
+
+        public ConsoleForm(ICNC cnc, int dimensions, OpenIoTBoardConfiguration boardConfig)
         {
             this.cnc = cnc;
             this.cnc.StateChanged += cnc_StateChanged;
-            this.scriptEngine = new CNCScriptEngine(dimensions);
+            this.ScriptEngine = new CNCScriptEngine(dimensions, this);
+            this.BoardConfig = boardConfig;
 
             InitializeComponent();
 
-            this.tbCommand.AutoCompleteCustomSource.AddRange(this.scriptEngine.commands.Select(c => c.Name).ToArray());
+            this.tbCommand.AutoCompleteCustomSource.AddRange(this.ScriptEngine.commands.Select(c => c.Name).ToArray());
 
             this.pbHint_SizeChanged(this, new EventArgs());
         }
@@ -63,16 +71,10 @@ namespace Palitri.OpenCNC.App
             if (string.IsNullOrWhiteSpace(inputCommand))
                 return;
 
-            CNCScriptCommandResult result = this.scriptEngine.Execute(this.cnc, inputCommand);
+            CNCScriptCommandResult result = this.ScriptEngine.Execute(this.cnc, inputCommand);
 
             if ((result.ResultType != CNCScriptCommandResultType.Error) || inputCommand.StartsWith("@"))
-                this.tbLog.AppendText(inputCommand + Environment.NewLine);
-            else if ("?".Equals(inputCommand, StringComparison.OrdinalIgnoreCase))
-                this.ListCommands();
-            else if ("clear".Equals(inputCommand, StringComparison.OrdinalIgnoreCase))
-                this.tbLog.Clear();
-            else if ("exit".Equals(inputCommand, StringComparison.OrdinalIgnoreCase))
-                this.Close();
+                this.Write(inputCommand);
             else
                 return;
 
@@ -113,18 +115,33 @@ namespace Palitri.OpenCNC.App
 
         private void UpdateHint()
         {
-            this.hintRenderer.Render(this.scriptEngine, this.tbCommand.Text, this.tbCommand.SelectionStart);
+            this.hintRenderer.Render(this.ScriptEngine, this.tbCommand.Text, this.tbCommand.SelectionStart);
 
             this.pbHint.Image = this.hintRenderer.Bitmap;
             this.pbHint.Invalidate();
         }
 
-        private void ListCommands()
+        #region ICNCScriptExtensionsHandler methods
+        
+        public void Write(string text, bool newLine = true)
         {
-            foreach (ICNCScriptCommand command in this.scriptEngine.commands)
-                this.tbLog.AppendText(string.Format("@{0} {1}{2}", command.Name, string.Join(", ", command.Parameters.ToArray()), Environment.NewLine));
+            this.tbLog.AppendText(text);
+
+            if (newLine)
+                this.tbLog.AppendText(Environment.NewLine);
         }
 
-    }
+        public void Clear()
+        {
+            this.tbLog.Clear();
+        }
 
+        public void Exit()
+        {
+            this.Close();
+        }
+
+
+        #endregion
+    }
 }

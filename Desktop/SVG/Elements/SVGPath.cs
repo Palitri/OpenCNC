@@ -34,7 +34,11 @@ namespace Palitri.SVG.Elements
                     if (elementLength != 0)
                     {
                         // Path data is a series of sequence of path elements, each a signature character followed by numbers. Numbers can be divided by varuios data splitters, as well as by nothing, if for example the next digit is negative and the minus sign can act as a divider
-                        string[] data = this.d.Substring(lastPos + 1, elementLength - 1).Replace("-", ",-").Split(dataSplitters, StringSplitOptions.RemoveEmptyEntries);
+                        string[] data = this.d.Substring(lastPos + 1, elementLength - 1)
+                            .Replace("e-", "[eNeg]")    // Temoporary replace exponent notations -  for values like "10e-4"
+                            .Replace("-", ",-")         // For parsing, add "," before minus, because sometimes there is no comma between two values, when the second is negative, like "10-20"
+                            .Replace("[eNeg]", "e-")    // Bring the exponent notation back
+                            .Split(dataSplitters, StringSplitOptions.RemoveEmptyEntries);
                         char signature = this.d[lastPos];
                         bool isRelative = char.IsLower(signature);
                         if (isRelative)
@@ -123,6 +127,7 @@ namespace Palitri.SVG.Elements
         public override void Render(Matrix3 transform, IGraphicsDevice g)
         {
             SVGPathRenderingParameters renderParams = new SVGPathRenderingParameters();
+            renderParams.color = this.Color;
 
             foreach (IPathElement element in this.elements)
                 element.Render(transform, g, renderParams);

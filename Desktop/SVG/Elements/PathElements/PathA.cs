@@ -13,7 +13,7 @@ namespace Palitri.SVG.Elements.PathElements
         public void Render(Matrix3 transform, IGraphicsDevice g, SVGPathRenderingParameters renderingParams)
         {
             float endX = this.relative ? renderingParams.pos.x + this.x : this.x;
-            float endY = this.relative ? renderingParams.pos.x + this.y : this.y;
+            float endY = this.relative ? renderingParams.pos.y + this.y : this.y;
 
             float cx, cy, startAngle, endAngle;
             float angle = (float)Math.PI * this.angle / 180.0f;

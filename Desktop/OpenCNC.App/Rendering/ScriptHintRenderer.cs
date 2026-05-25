@@ -56,9 +56,9 @@ namespace Palitri.OpenCNC.App.Rendering
 
                 do
                 {
-                    for (int i = 0; i < command.Parameters.Count; i++)
+                    for (int i = 0; i < command.Params.Count; i++)
                     {
-                        string commandParam = command.Parameters[i];
+                        string commandParam = command.Params[i].Name;
                         int paramNameWidth = (int)this.hintBitmapGraphics.MeasureString(commandParam, this.fontHintFunction).Width;
                         int paramUnderscoreWidth = command.InfiniteParameters ? (int)this.hintBitmapGraphics.MeasureString(paramsIteration.ToString(), this.fontHintFunctionUnderscore).Width : 0;
                         if (inputParamIndex < paramsDetails.Length)

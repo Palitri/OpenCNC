@@ -27,21 +27,25 @@ namespace Palitri.OpenCNC.Driver.Utils
 
             if (bits.StartsWith("0b"))
             {
+                // Binary format 0b01010101
                 numericBase = 2;
                 bits = bits.Substring(2);
             }
             else if (bits.StartsWith("0x"))
             {
+                // Hex format 0xF0A180
                 numericBase = 16;
                 bits = bits.Substring(2);
             }
             else if (bits.StartsWith("0d"))
             {
+                // Decimal format 0d12345678
                 numericBase = 10;
                 bits = bits.Substring(2);
             }
             else if (bits.Contains('#'))
             {
+                // Generic base format <base>#<value>, ex. 16#F0A180
                 int separatorIndex = bits.IndexOf('#') + 1;
                 numericBase = int.Parse(bits.Substring(0, separatorIndex - 1));
                 bits = bits.Substring(separatorIndex + 1);

@@ -1,51 +1,23 @@
-﻿using Palitri.OpenCNC.Script.Utils;
-using Palitri.OpenCNC.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Palitri.OpenCNC.Driver;
 
 namespace Palitri.OpenCNC.Script.Commands
 {
-    public class CNCScriptCommandExecute : ICNCScriptCommand
+    public class CNCScriptCommandExecute : CNCScriptCommandBase
     {
-        public string Name { get; private set; }
-        public List<string> Parameters { get; private set; }
-        public bool InfiniteParameters { get; private set; }
-
         public CNCScriptCommandExecute()
         {
             this.Name = "Execute";
-            this.Parameters = new List<string>();
             this.InfiniteParameters = false;
+            this.Params = new List<CNCScriptCommandParameter>();
         }
-        
-        public CNCScriptCommandResult Execute(ICNC cnc, string inputCommand)
+
+        public override void ExecuteCNCCommand(ICNC cnc, Dictionary<string, object> values)
         {
-            string[] parameters = ScriptUtils.SplitParams(inputCommand);
-
-            if (parameters.Length == 0)
-                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error);
-
-            if (!parameters[0].Equals(this.Name, StringComparison.OrdinalIgnoreCase))
-                return new CNCScriptCommandResult(CNCScriptCommandResultType.Error);
-
-            CNCScriptCommandResult result = ScriptUtils.GetResultByParameterCount(parameters.Length - 1, this.Parameters.Count(), this.InfiniteParameters);
-            if (result.ResultType == CNCScriptCommandResultType.Error)
-                return result;
-
-            if (cnc != null)
-            {
-                new Thread(() =>
+            new Thread(() =>
                 {
                     cnc.Execute();
                 }
-                ).Start();
-            }
-
-            return result;
+            ).Start();
         }
     }
 }

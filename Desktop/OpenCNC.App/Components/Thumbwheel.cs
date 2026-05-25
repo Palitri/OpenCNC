@@ -23,6 +23,7 @@ namespace Palitri.OpenCNC.App.Components
         private Point mouseVector;
 
         public Point ValueVector { get; set; }
+        public PointF ValueComponents { get; set; }
 
         private int _value;
         public int Value
@@ -69,6 +70,8 @@ namespace Palitri.OpenCNC.App.Components
 
             delta.Y = delta.Y * (this.ValueVector.Y == 0 ? 0 : 1.0f / (float)this.ValueVector.Y);
             delta.Y = delta.Y * Math.Abs(this.ValueVector.Y);
+
+            this.ValueComponents = delta;
 
             this.Value = (((int)(delta.X + delta.Y)) / step) * step;
 

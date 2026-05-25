@@ -14,6 +14,7 @@ namespace Palitri.SVG
         public abstract string NodeName { get; }
 
         public string Id { get; protected set; }
+        public Vector4 Color { get; protected set; }
 
         public SVGElement parent = null;
         public Dictionary<string, string> attributes = new Dictionary<string,string>();
@@ -37,6 +38,7 @@ namespace Palitri.SVG
                 this.attributes.Add(xmlReader.Name.ToLower(), xmlReader.Value);
 
             this.Id = this.GetAttribute<string>("id");
+            this.Color = this.GetStrokeColor();
             this.UpdateProperties();
 
             if (isEmptyElement)
@@ -162,6 +164,60 @@ namespace Palitri.SVG
             }
 
             return transform;
+        }
+
+        public Vector4 GetStrokeColor()
+        {
+            Dictionary<string, string> style = this.GetStyleProperties();
+
+            try
+            {
+                Vector4 color = this.ParseColorValue(style["stroke"]);
+                color.w = (float)Convert.ToDouble(style["stroke-opacity"]);
+                return color;
+            }
+            catch
+            {
+                return new Vector4();
+            }
+        }
+
+        public Dictionary<string, string> GetStyleProperties()
+        {
+            Dictionary<string, string> styleProperties = new Dictionary<string, string>();
+            string style = this.GetAttribute<string>("style", string.Empty);
+            string[] stylePropertiesStrings = style.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+            foreach (string styleProperty in stylePropertiesStrings)
+            {
+                string[] property = styleProperty.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+                if (property.Length > 1)
+                    styleProperties.Add(property[0], property[1]);
+            }
+
+            return styleProperties;
+        }
+
+        public Vector4 ParseColorValue(string value)
+        {
+            Vector4 result = new Vector4();
+
+            if (value == null)
+                return result;
+
+            try
+            {
+                uint rgb = Convert.ToUInt32(value.Replace("#", string.Empty), 16);
+
+                result.z = (rgb & 0xFF) / 255.0f; ;
+                result.y = ((rgb >> 8) & 0xFF) / 255.0f;
+                result.x = ((rgb >> 16) & 0xFF) / 255.0f;
+                result.w = ((rgb >> 24) & 0xFF) / 255.0f;
+            }
+            catch
+            {
+            }
+
+            return result;
         }
 
         public bool HasAttribute(string attributeName)

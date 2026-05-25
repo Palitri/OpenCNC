@@ -64,7 +64,7 @@ namespace Palitri.OpenCNC.App.Devices
         {
         }
 
-        public void Polyline(Vector2[] vertices)
+        public void Polyline(Vector2[] vertices, Vector4 color)
         {
             int length = vertices.Length;
             if (length == 0)
